@@ -42,8 +42,6 @@ namespace CAP_Backend_Source.Modules.Category.Services
             }
             _myDbContext.Categories.Remove(_category);
             await _myDbContext.SaveChangesAsync();
-            var result = "Successful Delete";
-
             return "Successful Delete";
         }
 

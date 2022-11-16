@@ -15,25 +15,25 @@ namespace CAP_Backend_Source.Controllers
             _categoryService = categoryService;
         }
 
-        [HttpGet("getall")]
+        [HttpGet]
         public async Task<IActionResult> GetAll() 
         {
             return Ok(await _categoryService.GetAllCategory());
         }
 
-        [HttpPost("create")]
+        [HttpPost]
         public async Task<IActionResult> CreateCategory(CreateCategoryRequest request)
         {
             return Ok(await _categoryService.CreateCategory(request));
         }
 
-        [HttpPut("update/{id}")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCategory(int id, EditCategoryRequest request)
         {
             return Ok(await _categoryService.UpdateCategory(id, request));
         }
 
-        [HttpDelete("delete/{id}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
             return Ok(await _categoryService.DeleteCategory(id));

@@ -21,7 +21,18 @@ namespace CAP_Backend_UnitTest
         private MyDbContext _myDbContext = new MyDbContext();
         private CategoryResposity categoryResposity = new CategoryResposity(new MyDbContext());
         public static int idCategory = 0;
-        
+
+        #region Get All Category
+        [Fact]
+        public async Task GetAllCategory_Success()
+        {
+            var response = await categoryResposity.GetAllCategory();
+            var listCategory = _myDbContext.Categories.ToList();
+            Assert.Equal(response.Count(), listCategory.Count());
+        }
+
+        #endregion
+
         #region Create Category
         [Fact]
         public async Task CreateCategory_Success()

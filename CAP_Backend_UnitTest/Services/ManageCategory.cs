@@ -14,24 +14,13 @@ using System.Text;
 using System.Threading.Tasks;
 using static CAP_Backend_Source.Modules.Category.Request.CategoryRequest;
 
-namespace CAP_Backend_UnitTest
+namespace CAP_Backend_UnitTest.Services
 {
-    public class Category
+    public class ManageCategory
     {
         private MyDbContext _myDbContext = new MyDbContext();
         private CategoryResposity categoryResposity = new CategoryResposity(new MyDbContext());
         public static int idCategory = 0;
-
-        #region Get All Category
-        [Fact]
-        public async Task GetAllCategory_Success()
-        {
-            var response = await categoryResposity.GetAllCategory();
-            var listCategory = _myDbContext.Categories.ToList();
-            Assert.Equal(response.Count(), listCategory.Count());
-        }
-
-        #endregion
 
         #region Create Category
         [Fact]
@@ -39,10 +28,10 @@ namespace CAP_Backend_UnitTest
         {
             var response = await categoryResposity.CreateCategory(new CreateCategoryRequest()
             {
-                Name = "Unit Test of Create Cateogry"
+                Name = "Unit Test of Create Category"
             });
             idCategory = int.Parse(response.CategoryId.ToString());
-            Assert.Equal("Unit Test of Create Cateogry", response.CategoryName);
+            Assert.Equal("Unit Test of Create Category", response.CategoryName);
         }
 
         [Fact]
@@ -63,10 +52,10 @@ namespace CAP_Backend_UnitTest
 
             var response = await categoryResposity.UpdateCategory(_category.CategoryId, new EditCategoryRequest()
             {
-                Name = "Unit Test of Edit Cateogry"
+                Name = "Unit Test of Edit Category"
             });
 
-            Assert.Equal("Unit Test of Edit Cateogry", response.CategoryName);
+            Assert.Equal("Unit Test of Edit Category", response.CategoryName);
         }
 
         [Fact]
@@ -74,7 +63,7 @@ namespace CAP_Backend_UnitTest
         {
             await Assert.ThrowsAsync<BadRequestException>(() => categoryResposity.UpdateCategory(0, new EditCategoryRequest()
             {
-                Name = "Unit Test of Edit Cateogry"
+                Name = "Unit Test of Edit Category"
             }));
         }
 
@@ -93,7 +82,8 @@ namespace CAP_Backend_UnitTest
         [Fact]
         public async Task DeleteCategory_Success()
         {
-            var response = await categoryResposity.DeleteCategory(idCategory);
+            var _category = await _myDbContext.Categories.FirstAsync();
+            var response = await categoryResposity.DeleteCategory(_category.CategoryId);
 
             Assert.Equal("Successful Delete", response);
         }
@@ -102,6 +92,16 @@ namespace CAP_Backend_UnitTest
         public async Task DeleteCategory_Fail_IdDoesNotExist()
         {
             await Assert.ThrowsAsync<BadRequestException>(() => categoryResposity.DeleteCategory(0));
+        }
+        #endregion
+
+        #region Get All Category
+        [Fact]
+        public async Task GetAllCategory_Success()
+        {
+            var response = await categoryResposity.GetAllCategory();
+            var listCategory = _myDbContext.Categories.ToList();
+            Assert.Equal(response.Count(), listCategory.Count());
         }
         #endregion
     }

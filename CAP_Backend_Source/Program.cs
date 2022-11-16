@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 using System.Text.Json.Serialization;
+using CAP_Backend_Source.Modules.FileStorage.Service;
+using CAP_Backend_Source.Modules.Programs.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,6 +44,8 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ICategoryService, CategoryResposity>();
 builder.Services.AddScoped<IRoleService, RoleResposity>();
 builder.Services.AddScoped<IFacultyService, FacultyResposity>();
+builder.Services.AddScoped<IFileStorageService, FileStorageService>();
+builder.Services.AddScoped<IProgramService, ProgramService>();
 var app = builder.Build();
 
 

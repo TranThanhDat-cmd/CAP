@@ -15,7 +15,7 @@ public partial class Program
 
     public string ProgramName { get; set; } = null!;
 
-    public string Image { get; set; } = null!;
+    public string? Image { get; set; } = null!;
 
     public DateTime StartDate { get; set; }
 

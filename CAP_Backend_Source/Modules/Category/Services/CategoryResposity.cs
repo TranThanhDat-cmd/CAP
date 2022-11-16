@@ -16,6 +16,12 @@ namespace CAP_Backend_Source.Modules.Category.Services
             _myDbContext = myDbContext;
         }
 
+        public async Task<List<Models.Category>> GetAllCategory()
+        {
+            List<Models.Category> listCategoris = await _myDbContext.Categories.ToListAsync();
+            return listCategoris;
+        }
+
         public async Task<Models.Category> CreateCategory(CreateCategoryRequest request)
         {
             if (request.Name == null || request.Name == "")
@@ -30,25 +36,6 @@ namespace CAP_Backend_Source.Modules.Category.Services
             await _myDbContext.Categories.AddAsync(category);
             await _myDbContext.SaveChangesAsync();
             return category;
-        }
-
-        public async Task<String> DeleteCategory(int id)
-        {
-            var _category = await _myDbContext.Categories.SingleOrDefaultAsync(c => c.CategoryId == id);
-
-            if (_category == null)
-            {
-                throw new BadRequestException("Category not found");
-            }
-            _myDbContext.Categories.Remove(_category);
-            await _myDbContext.SaveChangesAsync();
-            return "Successful Delete";
-        }
-
-        public async Task<List<Models.Category>> GetAllCategory()
-        {
-            List<Models.Category> listCategoris = await _myDbContext.Categories.ToListAsync();
-            return listCategoris;
         }
 
         public async Task<Models.Category> UpdateCategory(int id, EditCategoryRequest request)
@@ -67,5 +54,19 @@ namespace CAP_Backend_Source.Modules.Category.Services
 
             return _category;
         }
+
+        public async Task<String> DeleteCategory(int id)
+        {
+            var _category = await _myDbContext.Categories.SingleOrDefaultAsync(c => c.CategoryId == id);
+
+            if (_category == null)
+            {
+                throw new BadRequestException("Category not found");
+            }
+            _myDbContext.Categories.Remove(_category);
+            await _myDbContext.SaveChangesAsync();
+            return "Successful Delete";
+        }
+       
     }
 }

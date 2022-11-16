@@ -16,7 +16,7 @@ namespace CAP_Backend_Source.Modules.Faculty.Services
 
         public async Task<Models.Faculty> CreateFaculty(CreateFacultyRequest request)
         {
-            if(request.Name== null)
+            if(request.Name == null || request.Name == "")
             {
                 throw new BadRequestException("Name cannot be left blank");
             }
@@ -27,19 +27,6 @@ namespace CAP_Backend_Source.Modules.Faculty.Services
             await _myDbContext.Faculties.AddAsync(faculty);
             await _myDbContext.SaveChangesAsync();
             return faculty;
-        }
-
-        public async Task<string> DeleteFaculty(int id)
-        {
-            var _faculty = await _myDbContext.Faculties.SingleOrDefaultAsync(f => f.FacultyId == id);
-
-            if (_faculty == null)
-            {
-                throw new BadRequestException("Faculty not found");
-            }
-            _myDbContext.Faculties.Remove(_faculty);
-            await _myDbContext.SaveChangesAsync();
-            return "Successful Delete";
         }
 
         public async Task<List<Models.Faculty>> GetAllFaculty()
@@ -63,6 +50,18 @@ namespace CAP_Backend_Source.Modules.Faculty.Services
             await _myDbContext.SaveChangesAsync();
 
             return _faculty;
+        }
+        public async Task<string> DeleteFaculty(int id)
+        {
+            var _faculty = await _myDbContext.Faculties.SingleOrDefaultAsync(f => f.FacultyId == id);
+
+            if (_faculty == null)
+            {
+                throw new BadRequestException("Faculty not found");
+            }
+            _myDbContext.Faculties.Remove(_faculty);
+            await _myDbContext.SaveChangesAsync();
+            return "Successful Delete";
         }
     }
 }

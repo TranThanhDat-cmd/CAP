@@ -4,7 +4,7 @@ using CAP_Backend_Source.Modules.Account.Services;
 using CAP_Backend_Source.Services.User.Request;
 using Infrastructure.Exceptions.HttpExceptions;
 
-namespace CAP_Backend_UnitTest
+namespace CAP_Backend_UnitTest.Services
 {
     public class Accounts
     {

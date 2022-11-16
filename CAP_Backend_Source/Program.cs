@@ -2,6 +2,7 @@ using CAP_Backend_Source.Common;
 using CAP_Backend_Source.Models;
 using CAP_Backend_Source.Modules.Account.Services;
 using CAP_Backend_Source.Modules.Category.Services;
+using CAP_Backend_Source.Modules.Faculty.Services;
 using CAP_Backend_Source.Modules.Role.Services;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
@@ -40,6 +41,7 @@ builder.Services.AddControllers(options =>
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ICategoryService, CategoryResposity>();
 builder.Services.AddScoped<IRoleService, RoleResposity>();
+builder.Services.AddScoped<IFacultyService, FacultyResposity>();
 var app = builder.Build();
 
 

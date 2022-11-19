@@ -33,5 +33,14 @@ namespace CAP_Backend_Source.Controllers
         {
             return Ok(await _accountService.UpdateAsync(id,request));
         }
+
+        [HttpPost("Login")]
+        public async Task<IActionResult> LoginAsync(LoginRequest request)
+        {
+            return Ok(new
+            {
+                Token = await _accountService.LoginAsync(request),
+            });
+        }
     }
 }

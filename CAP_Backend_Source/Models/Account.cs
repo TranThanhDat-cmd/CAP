@@ -19,6 +19,8 @@ public partial class Account
 
     public string? PhoneNumber { get; set; }
 
+    public DateTime? LastLogin { get; set; }
+
     public virtual ICollection<EssayAnswer> EssayAnswers { get; } = new List<EssayAnswer>();
 
     public virtual ICollection<Learner> LearnerAccountIdApproverNavigations { get; } = new List<Learner>();

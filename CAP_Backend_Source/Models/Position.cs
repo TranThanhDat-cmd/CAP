@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace CAP_Backend_Source.Models;
 
-public partial class Faculty
+public partial class Position
 {
-    public int FacultyId { get; set; }
+    public int PositionId { get; set; }
 
-    public string? FacultyName { get; set; }
+    public string? PositionName { get; set; }
 
     public virtual ICollection<Account> Accounts { get; } = new List<Account>();
 

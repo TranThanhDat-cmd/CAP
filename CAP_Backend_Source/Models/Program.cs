@@ -15,7 +15,7 @@ public partial class Program
 
     public string ProgramName { get; set; } = null!;
 
-    public string? Image { get; set; } = null!;
+    public string Image { get; set; } = null!;
 
     public DateTime StartDate { get; set; }
 
@@ -25,6 +25,8 @@ public partial class Program
 
     public int? Coin { get; set; }
 
+    public int? PositionId { get; set; }
+
     public virtual Account AccountIdCreatorNavigation { get; set; } = null!;
 
     public virtual Category Category { get; set; } = null!;
@@ -32,6 +34,8 @@ public partial class Program
     public virtual ICollection<ContentProgram> ContentPrograms { get; } = new List<ContentProgram>();
 
     public virtual Faculty Faculty { get; set; } = null!;
+
+    public virtual Position? Position { get; set; }
 
     public virtual ICollection<Test> Tests { get; } = new List<Test>();
 }

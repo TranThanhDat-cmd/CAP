@@ -13,15 +13,13 @@ public partial class Test
 
     public int TypeId { get; set; }
 
-    public int Time { get; set; }
+    public int? Time { get; set; }
 
     public int Chapter { get; set; }
 
-    public virtual ICollection<EssayQuestion> EssayQuestions { get; } = new List<EssayQuestion>();
-
-    public virtual ICollection<MultipleChoiceQuestion> MultipleChoiceQuestions { get; } = new List<MultipleChoiceQuestion>();
-
     public virtual Program Program { get; set; } = null!;
+
+    public virtual ICollection<Question> Questions { get; } = new List<Question>();
 
     public virtual Type Type { get; set; } = null!;
 }

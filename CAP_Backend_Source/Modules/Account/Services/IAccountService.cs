@@ -91,7 +91,7 @@ namespace CAP_Backend_Source.Modules.Account.Services
 
             UserInfor? userInfor = await response.Content.ReadFromJsonAsync<UserInfor>();
 
-            var acc = await _myDbContext.Accounts.Where(x => x.ExtendnalId == userInfor!.Id)
+            var acc = await _myDbContext.Accounts.Where(x => x.Email == userInfor!.Mail)
                 .FirstOrDefaultAsync();
             if (acc is null)
             {
@@ -99,7 +99,6 @@ namespace CAP_Backend_Source.Modules.Account.Services
                 {
                     Email = userInfor!.Mail!,
                     FullName = userInfor!.DisplayName,
-                    ExtendnalId = userInfor!.Id,
                     LastLogin = DateTime.Now,
                 };
                 await _myDbContext.Accounts.AddAsync(acc);

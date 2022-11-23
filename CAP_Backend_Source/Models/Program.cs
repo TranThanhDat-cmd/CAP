@@ -36,6 +36,4 @@ public partial class Program
     public virtual Faculty Faculty { get; set; } = null!;
 
     public virtual Position? Position { get; set; }
-
-    public virtual ICollection<Test> Tests { get; } = new List<Test>();
 }

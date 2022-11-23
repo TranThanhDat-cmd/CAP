@@ -7,19 +7,17 @@ public partial class Test
 {
     public int TestId { get; set; }
 
-    public int ProgramId { get; set; }
+    public int ContentId { get; set; }
 
     public string TestTitle { get; set; } = null!;
-
-    public int TypeId { get; set; }
 
     public int? Time { get; set; }
 
     public int Chapter { get; set; }
 
-    public virtual Program Program { get; set; } = null!;
+    public bool? IsRandom { get; set; }
+
+    public virtual ContentProgram Content { get; set; } = null!;
 
     public virtual ICollection<Question> Questions { get; } = new List<Question>();
-
-    public virtual Type Type { get; set; } = null!;
 }

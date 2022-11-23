@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using CAP_Backend_Source.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace CAP_Backend_Source.Models;
+namespace MyDbContext;
 
 public partial class Cp25team02Context : DbContext
 {
@@ -33,11 +34,13 @@ public partial class Cp25team02Context : DbContext
 
     public virtual DbSet<Question> Questions { get; set; }
 
+    public virtual DbSet<QuestionContent> QuestionContents { get; set; }
+
+    public virtual DbSet<QuestionType> QuestionTypes { get; set; }
+
     public virtual DbSet<Role> Roles { get; set; }
 
     public virtual DbSet<Test> Tests { get; set; }
-
-    public virtual DbSet<Type> Types { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
@@ -54,6 +57,7 @@ public partial class Cp25team02Context : DbContext
             entity.Property(e => e.Address).HasMaxLength(255);
             entity.Property(e => e.Email).HasMaxLength(255);
             entity.Property(e => e.FullName).HasMaxLength(50);
+            entity.Property(e => e.LastLogin).HasColumnType("datetime");
             entity.Property(e => e.PhoneNumber)
                 .HasMaxLength(10)
                 .IsUnicode(false);
@@ -171,6 +175,29 @@ public partial class Cp25team02Context : DbContext
             entity.HasOne(d => d.Tests).WithMany(p => p.Questions)
                 .HasForeignKey(d => d.TestsId)
                 .HasConstraintName("FK_Question_Test");
+
+            entity.HasOne(d => d.Type).WithMany(p => p.Questions)
+                .HasForeignKey(d => d.TypeId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Question_Type");
+        });
+
+        modelBuilder.Entity<QuestionContent>(entity =>
+        {
+            entity.HasKey(e => e.QuestionContentId).HasName("PK__Question__22E90A2CC67A1CDB");
+
+            entity.ToTable("QuestionContent");
+
+            entity.HasOne(d => d.Question).WithMany(p => p.QuestionContents)
+                .HasForeignKey(d => d.QuestionId)
+                .HasConstraintName("FK_QuestionContent_Question");
+        });
+
+        modelBuilder.Entity<QuestionType>(entity =>
+        {
+            entity.HasKey(e => e.TypeId).HasName("PK__Type__516F03B5233EFFD8");
+
+            entity.ToTable("QuestionType");
         });
 
         modelBuilder.Entity<Role>(entity =>
@@ -186,22 +213,10 @@ public partial class Cp25team02Context : DbContext
 
             entity.ToTable("Test");
 
-            entity.HasOne(d => d.Program).WithMany(p => p.Tests)
-                .HasForeignKey(d => d.ProgramId)
+            entity.HasOne(d => d.Content).WithMany(p => p.Tests)
+                .HasForeignKey(d => d.ContentId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Test_Program");
-
-            entity.HasOne(d => d.Type).WithMany(p => p.Tests)
-                .HasForeignKey(d => d.TypeId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Test_Type");
-        });
-
-        modelBuilder.Entity<Type>(entity =>
-        {
-            entity.HasKey(e => e.TypeId).HasName("PK__Type__516F03B5233EFFD8");
-
-            entity.ToTable("Type");
+                .HasConstraintName("FK_Test_ContentProgram");
         });
 
         OnModelCreatingPartial(modelBuilder);

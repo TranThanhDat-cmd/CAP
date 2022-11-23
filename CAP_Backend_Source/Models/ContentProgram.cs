@@ -16,4 +16,6 @@ public partial class ContentProgram
     public string Content { get; set; } = null!;
 
     public virtual Program Program { get; set; } = null!;
+
+    public virtual ICollection<Test> Tests { get; } = new List<Test>();
 }

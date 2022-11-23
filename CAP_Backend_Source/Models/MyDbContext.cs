@@ -92,10 +92,7 @@ public partial class MyDbContext : DbContext
             entity.Property(e => e.EanswerContent).HasColumnName("EAnswerContent");
             entity.Property(e => e.EquestionId).HasColumnName("EQuestionId");
 
-            entity.HasOne(d => d.AccountIdRespondentNavigation).WithMany(p => p.EssayAnswers)
-                .HasForeignKey(d => d.AccountIdRespondent)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_EssayAnswers_Account");
+
 
             entity.HasOne(d => d.Equestion).WithMany(p => p.EssayAnswers)
                 .HasForeignKey(d => d.EquestionId)
@@ -109,10 +106,6 @@ public partial class MyDbContext : DbContext
             entity.Property(e => e.EquestionId).HasColumnName("EQuestionId");
             entity.Property(e => e.EquestionTitle).HasColumnName("EQuestionTitle");
 
-            entity.HasOne(d => d.Tests).WithMany(p => p.EssayQuestions)
-                .HasForeignKey(d => d.TestsId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_EssayQuestions_Test");
         });
 
         modelBuilder.Entity<Faculty>(entity =>
@@ -147,10 +140,6 @@ public partial class MyDbContext : DbContext
             entity.Property(e => e.McanswerContent).HasColumnName("MCAnswerContent");
             entity.Property(e => e.McquestionId).HasColumnName("MCQuestionId");
 
-            entity.HasOne(d => d.AccountIdRespondentNavigation).WithMany(p => p.MultipleChoiceAnswers)
-                .HasForeignKey(d => d.AccountIdRespondent)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MultipleChoiceAnswers_Account");
 
             entity.HasOne(d => d.Mcquestion).WithMany(p => p.MultipleChoiceAnswers)
                 .HasForeignKey(d => d.McquestionId)
@@ -164,10 +153,6 @@ public partial class MyDbContext : DbContext
             entity.Property(e => e.McquestionId).HasColumnName("MCQuestionId");
             entity.Property(e => e.McquestionTitle).HasColumnName("MCQuestionTitle");
 
-            entity.HasOne(d => d.Tests).WithMany(p => p.MultipleChoiceQuestions)
-                .HasForeignKey(d => d.TestsId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MultipleChoiceQuestions_Test");
         });
 
         modelBuilder.Entity<Program>(entity =>

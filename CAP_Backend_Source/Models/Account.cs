@@ -12,7 +12,6 @@ public partial class Account
     public string? FullName { get; set; }
 
     public string? Address { get; set; }
-    public DateTime? LastLogin { get; set; }
 
     public string Email { get; set; } = null!;
 
@@ -21,6 +20,8 @@ public partial class Account
     public int? PositionId { get; set; }
 
     public int? FacultyId { get; set; }
+
+    public DateTime? LastLogin { get; set; }
 
     public virtual Faculty? Faculty { get; set; }
 

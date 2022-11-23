@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using CAP_Backend_Source.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace MyDbContext;
+namespace CAP_Backend_Source.Models;
 
-public partial class Cp25team02Context : DbContext
+public partial class MyDbContext : DbContext
 {
-    public Cp25team02Context()
+    public MyDbContext()
     {
     }
 
-    public Cp25team02Context(DbContextOptions<Cp25team02Context> options)
+    public MyDbContext(DbContextOptions<MyDbContext> options)
         : base(options)
     {
     }

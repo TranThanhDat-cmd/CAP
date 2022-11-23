@@ -11,9 +11,9 @@ namespace CAP_Backend_Source.Modules.TypeTest.Service
             _myDbContext = myDbContext;
         }
 
-        public async Task<List<Models.Type>> GetAll()
+        public async Task<List<Models.QuestionType>> GetAll()
         {
-            var list = await _myDbContext.Types.ToListAsync();
+            var list = await _myDbContext.QuestionTypes.ToListAsync();
             return list;
         }
     }

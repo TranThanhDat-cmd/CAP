@@ -2,6 +2,6 @@
 {
     public interface ITypeTestService
     {
-        Task<List<Models.Type>> GetAll();
+        Task<List<Models.QuestionType>> GetAll();
     }
 }

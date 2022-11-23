@@ -17,7 +17,7 @@ namespace CAP_Backend_Source.Modules.Tests.Service
         public async Task<Test> CreateTest(CreateTestRequest request)
         {
             #region check input
-            if (request.ProgramId <= 0)
+            if (request.ContentId <= 0)
             {
                 throw new BadRequestException("ProgramId cannot be null");
             }
@@ -27,24 +27,24 @@ namespace CAP_Backend_Source.Modules.Tests.Service
                 throw new BadRequestException("TestTitle cannot be left blank");
             }
 
-            if (request.TypeId <= 0)
-            {
-                throw new BadRequestException("TypeId cannot be null");
-            }
-
             if (request.Chapter <= 0)
             {
                 throw new BadRequestException("Chapter cannot be null");
+            }
+
+            if (request.IsRandom == null)
+            {
+                request.IsRandom = false;
             }
             #endregion
 
             //action
             var test = new Test() {
-                ProgramId = request.ProgramId,
+                ContentId = request.ContentId,
                 TestTitle = request.TestTitle,
-                TypeId = request.TypeId,
                 Time = request.Time,
-                Chapter = request.Chapter
+                Chapter = request.Chapter,
+                IsRandom = request.IsRandom,
             };
             await _myDbContext.Tests.AddAsync(test);
             await _myDbContext.SaveChangesAsync();
@@ -63,11 +63,15 @@ namespace CAP_Backend_Source.Modules.Tests.Service
             return "Successful Delete";
         }
 
-        public async Task<List<Test>> GetTestByProgramId(int id)
+        public async Task<Test> GetTestByContentId(int id)
         {
-            List<Test> listTest = await _myDbContext.Tests.Where(t => t.ProgramId == id).ToListAsync();
+            var _test = await _myDbContext.Tests.SingleOrDefaultAsync(t => t.ContentId == id);
 
-            return listTest;
+            if (_test == null)
+            {
+                throw new BadRequestException("Test not found");
+            }
+            return _test;
         }
 
         public async Task<Test> UpdateTest(int id, UpdateTestRequest request)
@@ -78,14 +82,14 @@ namespace CAP_Backend_Source.Modules.Tests.Service
                 throw new BadRequestException("TestTitle cannot be left blank");
             }
 
-            if (request.TypeId <= 0)
-            {
-                throw new BadRequestException("TypeId cannot be null");
-            }
-
             if (request.Chapter <= 0)
             {
                 throw new BadRequestException("Chapter cannot be null");
+            }
+
+            if(request.IsRandom == null)
+            {
+                request.IsRandom = false;
             }
             #endregion check input
 
@@ -96,9 +100,9 @@ namespace CAP_Backend_Source.Modules.Tests.Service
                 throw new BadRequestException("Test not found");
             }
             _test.TestTitle = request.TestTitle;
-            _test.TypeId = request.TypeId;
             _test.Time = request.Time;
             _test.Chapter = request.Chapter;
+            _test.IsRandom= request.IsRandom;
             await _myDbContext.SaveChangesAsync();
             return _test;
         }

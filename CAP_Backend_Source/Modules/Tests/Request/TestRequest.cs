@@ -4,19 +4,26 @@
     {
         public class CreateTestRequest
         {
-            public int ProgramId { get; set; }
+            public int ContentId { get; set; }
+
             public string TestTitle { get; set; } = null!;
-            public int TypeId { get; set; }
-            public int Time { get; set; }
+
+            public int? Time { get; set; }
+
             public int Chapter { get; set; }
+
+            public bool? IsRandom { get; set; }
         }
 
         public class UpdateTestRequest
         {
             public string TestTitle { get; set; } = null!;
-            public int TypeId { get; set; }
-            public int Time { get; set; }
+
+            public int? Time { get; set; }
+
             public int Chapter { get; set; }
+
+            public bool? IsRandom { get; set; }
         }
     }
 }

@@ -19,7 +19,7 @@ namespace CAP_Backend_Source.Controllers
         [HttpGet]
         public async Task<IActionResult> GetTestByProgramId(int id)
         {
-            return Ok(await _testService.GetTestByProgramId(id));
+            return Ok(await _testService.GetTestByContentId(id));
         }
 
         [HttpPost]

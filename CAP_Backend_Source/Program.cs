@@ -14,8 +14,6 @@ using CAP_Backend_Source.Modules.FileStorage.Service;
 using CAP_Backend_Source.Modules.Programs.Service;
 using CAP_Backend_Source.Modules.Tests.Service;
 using CAP_Backend_Source.Modules.TypeTest.Service;
-using CAP_Backend_Source.Modules.MultipleChoiceQuestion.Service;
-using CAP_Backend_Source.Modules.EssayQuestion.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,8 +50,6 @@ builder.Services.AddScoped<IFileStorageService, FileStorageService>();
 builder.Services.AddScoped<IProgramService, ProgramService>();
 builder.Services.AddScoped<ITypeTestService, TypeTestResposity>();
 builder.Services.AddScoped<ITestService, TestResposity>();
-builder.Services.AddScoped<IMCQuestionService, MCQuestionResposity>();
-builder.Services.AddScoped<IEQuestionService, EQuestionResposity>();
 var app = builder.Build();
 
 

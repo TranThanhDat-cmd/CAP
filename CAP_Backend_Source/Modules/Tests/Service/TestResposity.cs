@@ -1,4 +1,5 @@
 ﻿using CAP_Backend_Source.Models;
+using CAP_Backend_Source.Modules.Question.Service;
 using Infrastructure.Exceptions.HttpExceptions;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,9 +10,11 @@ namespace CAP_Backend_Source.Modules.Tests.Service
     public class TestResposity : ITestService
     {
         private MyDbContext _myDbContext;
-        public TestResposity(MyDbContext myDbContext)
+        private readonly IQuestionService _questionService;
+        public TestResposity(MyDbContext myDbContext, IQuestionService questionService)
         {
             _myDbContext = myDbContext;
+            _questionService = questionService;
         }
 
         public async Task<Test> CreateTest(CreateTestRequest request)
@@ -58,6 +61,12 @@ namespace CAP_Backend_Source.Modules.Tests.Service
             {
                 throw new BadRequestException("Test not found");
             }
+            List<Models.Question> listQuestions = await _myDbContext.Questions.Where(q => q.TestsId == id).ToListAsync();
+            foreach (var _question in listQuestions)
+            {
+                await _questionService.DeleteQuestion(_question.QuestionId);
+            }
+
             _myDbContext.Tests.Remove(_test);
             await _myDbContext.SaveChangesAsync();
             return "Successful Delete";

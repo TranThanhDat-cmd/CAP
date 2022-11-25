@@ -122,11 +122,15 @@ namespace CAP_Backend_Source.Modules.Account.Services
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim("Id",account.AccountId.ToString()),
-                    new Claim("Roles",account.Role!.RoleName!),
                 }),
                 Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKey), SecurityAlgorithms.HmacSha256Signature)
             };
+            if (account.Role != null)
+            {
+                tokenDescriptor.Subject.AddClaim(new Claim("Roles", account.Role.RoleName!));
+            }
+
             var token = jwtTokenHandler.CreateToken(tokenDescriptor);
             return jwtTokenHandler.WriteToken(token);
         }

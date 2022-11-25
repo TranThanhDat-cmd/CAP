@@ -22,5 +22,8 @@ namespace CAP_Backend_Source.Modules.Programs.Request
         public bool IsPublish { get; set; }
         [Required]
         public int? Coin { get; set; }
+        [Required]
+        public int? PositionId { get; set; }
+
     }
 }

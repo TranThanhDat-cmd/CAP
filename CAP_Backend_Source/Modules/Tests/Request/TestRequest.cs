@@ -21,8 +21,6 @@
 
             public int? Time { get; set; }
 
-            public int Chapter { get; set; }
-
             public bool? IsRandom { get; set; }
         }
     }

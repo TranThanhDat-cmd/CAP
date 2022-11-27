@@ -5,6 +5,7 @@ namespace CAP_Backend_Source.Models;
 
 public partial class Program
 {
+    //Nhiều chức vụ, Thêm kỳ , Thêm bảng niên khóa
     public int ProgramId { get; set; }
 
     public int AccountIdCreator { get; set; }

@@ -100,6 +100,7 @@ namespace CAP_Backend_Source.Modules.Account.Services
                     Email = userInfor!.Mail!,
                     FullName = userInfor!.DisplayName,
                     LastLogin = DateTime.Now,
+                    RoleId = 1,
                 };
                 await _myDbContext.Accounts.AddAsync(acc);
             }
@@ -110,13 +111,15 @@ namespace CAP_Backend_Source.Modules.Account.Services
 
             await _myDbContext.SaveChangesAsync();
 
-            return GenerateJwtToken(acc);
+            return GenerateJwtToken((await _myDbContext.Accounts.Where(x => x.AccountId == acc.AccountId)
+                .Include(x => x.Role)
+                .FirstOrDefaultAsync())!);
         }
 
         private string GenerateJwtToken(Models.Account account)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
-            var secretKey = Encoding.ASCII.GetBytes("");
+            var secretKey = Encoding.ASCII.GetBytes("81426C51-951E-4ACC-8541-000F32540381");
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
                 Subject = new ClaimsIdentity(new[]

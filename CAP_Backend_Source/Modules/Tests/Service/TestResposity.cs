@@ -10,11 +10,9 @@ namespace CAP_Backend_Source.Modules.Tests.Service
     public class TestResposity : ITestService
     {
         private MyDbContext _myDbContext;
-        private readonly IQuestionService _questionService;
-        public TestResposity(MyDbContext myDbContext, IQuestionService questionService)
+        public TestResposity(MyDbContext myDbContext)
         {
             _myDbContext = myDbContext;
-            _questionService = questionService;
         }
 
         public async Task<Test> CreateTest(CreateTestRequest request)
@@ -61,6 +59,7 @@ namespace CAP_Backend_Source.Modules.Tests.Service
             {
                 throw new BadRequestException("Test not found");
             }
+            var _questionService = new QuestionResposity(_myDbContext);
             List<Models.Question> listQuestions = await _myDbContext.Questions.Where(q => q.TestsId == id).ToListAsync();
             foreach (var _question in listQuestions)
             {
@@ -91,11 +90,6 @@ namespace CAP_Backend_Source.Modules.Tests.Service
                 throw new BadRequestException("TestTitle cannot be left blank");
             }
 
-            if (request.Chapter <= 0)
-            {
-                throw new BadRequestException("Chapter cannot be null");
-            }
-
             if(request.IsRandom == null)
             {
                 request.IsRandom = false;
@@ -110,7 +104,6 @@ namespace CAP_Backend_Source.Modules.Tests.Service
             }
             _test.TestTitle = request.TestTitle;
             _test.Time = request.Time;
-            _test.Chapter = request.Chapter;
             _test.IsRandom= request.IsRandom;
             await _myDbContext.SaveChangesAsync();
             return _test;

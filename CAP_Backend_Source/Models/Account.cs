@@ -7,7 +7,7 @@ public partial class Account
 {
     public int AccountId { get; set; }
 
-    public int RoleId { get; set; }
+    public int? RoleId { get; set; }
 
     public string? FullName { get; set; }
 
@@ -33,5 +33,5 @@ public partial class Account
 
     public virtual ICollection<Program> Programs { get; } = new List<Program>();
 
-    public virtual Role Role { get; set; } = null!;
+    public virtual Role? Role { get; set; }
 }

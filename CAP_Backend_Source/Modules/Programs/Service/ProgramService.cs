@@ -9,7 +9,7 @@ namespace CAP_Backend_Source.Modules.Programs.Service
     public interface IProgramService
     {
         Task<List<Models.Program>> GetAsync();
-        Task<Models.Program> CreateAsync(CreateProgramRequest request);
+        Task<Models.Program> CreateAsync(int userId, CreateProgramRequest request);
         Task<Models.Program> UpdateAsync(int id, CreateProgramRequest request);
         Task DeleteAsync(int id);
         Task<Models.Program?> GetDetailAsync(int id);
@@ -26,29 +26,24 @@ namespace CAP_Backend_Source.Modules.Programs.Service
             _myDbContext = myDbContext;
         }
 
-        public async Task<Models.Program> CreateAsync(CreateProgramRequest request)
+        public async Task<Models.Program> CreateAsync(int userId, CreateProgramRequest request)
         {
-            if (!_myDbContext.Faculties.Any(x => x.FacultyId == request.FacultyId))
+            if (request.FacultyId != null && !_myDbContext.Faculties.Any(x => x.FacultyId == request.FacultyId))
             {
                 throw new BadRequestException("FacultyId Not Found");
 
             }
 
-            if (!_myDbContext.Categories.Any(x => x.CategoryId == request.CategoryId))
+            if (request.CategoryId != null && !_myDbContext.Categories.Any(x => x.CategoryId == request.CategoryId))
             {
                 throw new BadRequestException("CategoryId Not Found");
 
             }
 
-            if (!_myDbContext.Accounts.Any(x => x.AccountId == request.AccountIdCreator))
-            {
-                throw new BadRequestException("AccountIdCreator Not Found");
-
-            }
 
             Models.Program program = new()
             {
-                AccountIdCreator = request.AccountIdCreator,
+                AccountIdCreator = userId,
                 FacultyId = request.FacultyId,
                 CategoryId = request.CategoryId,
                 ProgramName = request.ProgramName,
@@ -57,7 +52,9 @@ namespace CAP_Backend_Source.Modules.Programs.Service
                 EndDate = request.EndDate,
                 IsPublish = request.IsPublish,
                 Coin = request.Coin,
-                PositionId = request.PositionId
+                AcademicYearId = request.AcademicYearId,
+                Positions = request.Positions,
+                Semester = request.Semester,
             };
 
             await _myDbContext.Programs.AddAsync(program);
@@ -68,23 +65,18 @@ namespace CAP_Backend_Source.Modules.Programs.Service
 
         public async Task<Models.Program> UpdateAsync(int id, CreateProgramRequest request)
         {
-            if (!_myDbContext.Faculties.Any(x => x.FacultyId == request.FacultyId))
+            if (request.FacultyId != null && !_myDbContext.Faculties.Any(x => x.FacultyId == request.FacultyId))
             {
                 throw new BadRequestException("FacultyId Not Found");
 
             }
 
-            if (!_myDbContext.Categories.Any(x => x.CategoryId == request.CategoryId))
+            if (request.CategoryId != null && !_myDbContext.Categories.Any(x => x.CategoryId == request.CategoryId))
             {
                 throw new BadRequestException("CategoryId Not Found");
 
             }
 
-            if (!_myDbContext.Accounts.Any(x => x.AccountId == request.AccountIdCreator))
-            {
-                throw new BadRequestException("AccountIdCreator Not Found");
-
-            }
 
             Models.Program? program = await _myDbContext.Programs.FirstOrDefaultAsync(x => x.ProgramId == id);
 
@@ -95,7 +87,6 @@ namespace CAP_Backend_Source.Modules.Programs.Service
             }
 
 
-            program.AccountIdCreator = request.AccountIdCreator;
             program.FacultyId = request.FacultyId;
             program.CategoryId = request.CategoryId;
             program.ProgramName = request.ProgramName;
@@ -104,7 +95,9 @@ namespace CAP_Backend_Source.Modules.Programs.Service
             program.EndDate = request.EndDate;
             program.IsPublish = request.IsPublish;
             program.Coin = request.Coin;
-            program.PositionId = request.PositionId;
+            program.AcademicYearId = request.AcademicYearId;
+            program.Positions = request.Positions;
+            program.Semester = request.Semester;
 
             await _myDbContext.SaveChangesAsync();
             return program;

@@ -5,12 +5,10 @@ namespace CAP_Backend_Source.Modules.Programs.Request
     public class CreateProgramRequest
     {
 
-        [Required]
-        public int FacultyId { get; set; }
-        [Required]
-        public int AccountIdCreator { get; set; }
-        [Required]
-        public int CategoryId { get; set; }
+
+        public int? FacultyId { get; set; }
+
+        public int? CategoryId { get; set; }
         [Required]
         public string ProgramName { get; set; } = null!;
         public IFormFile? Image { get; set; }
@@ -20,10 +18,16 @@ namespace CAP_Backend_Source.Modules.Programs.Request
         public DateTime EndDate { get; set; }
         [Required]
         public bool IsPublish { get; set; }
-        [Required]
+
         public int? Coin { get; set; }
-        [Required]
+
         public int? PositionId { get; set; }
+
+        public string? Positions { get; set; }
+
+        public int? AcademicYearId { get; set; }
+
+        public int? Semester { get; set; }
 
     }
 }

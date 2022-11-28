@@ -5,18 +5,17 @@ namespace CAP_Backend_Source.Models;
 
 public partial class Program
 {
-    //Nhiều chức vụ, Thêm kỳ , Thêm bảng niên khóa
     public int ProgramId { get; set; }
 
-    public int AccountIdCreator { get; set; }
+    public int? AccountIdCreator { get; set; }
 
-    public int FacultyId { get; set; }
+    public int? FacultyId { get; set; }
 
-    public int CategoryId { get; set; }
+    public int? CategoryId { get; set; }
 
     public string ProgramName { get; set; } = null!;
 
-    public string? Image { get; set; } = null!;
+    public string Image { get; set; } = null!;
 
     public DateTime StartDate { get; set; }
 
@@ -26,7 +25,13 @@ public partial class Program
 
     public int? Coin { get; set; }
 
-    public int? PositionId { get; set; }
+    public string? Positions { get; set; }
+
+    public int? AcademicYearId { get; set; }
+
+    public int? Semester { get; set; }
+
+    public virtual AcademicYear? AcademicYear { get; set; }
 
     public virtual Account AccountIdCreatorNavigation { get; set; } = null!;
 
@@ -35,6 +40,4 @@ public partial class Program
     public virtual ICollection<ContentProgram> ContentPrograms { get; } = new List<ContentProgram>();
 
     public virtual Faculty Faculty { get; set; } = null!;
-
-    public virtual Position? Position { get; set; }
 }

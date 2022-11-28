@@ -15,6 +15,8 @@ public partial class MyDbContext : DbContext
     {
     }
 
+    public virtual DbSet<AcademicYear> AcademicYears { get; set; }
+
     public virtual DbSet<Account> Accounts { get; set; }
 
     public virtual DbSet<Answer> Answers { get; set; }
@@ -47,6 +49,17 @@ public partial class MyDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<AcademicYear>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Academic__3214EC0771C023BA");
+
+            entity.ToTable("AcademicYear");
+
+            entity.Property(e => e.Year)
+                .HasMaxLength(255)
+                .IsUnicode(false);
+        });
+
         modelBuilder.Entity<Account>(entity =>
         {
             entity.HasKey(e => e.AccountId).HasName("PK__Account__3214EC0795771D95");
@@ -72,6 +85,7 @@ public partial class MyDbContext : DbContext
 
             entity.HasOne(d => d.Role).WithMany(p => p.Accounts)
                 .HasForeignKey(d => d.RoleId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_ROLE");
         });
 
@@ -145,6 +159,10 @@ public partial class MyDbContext : DbContext
             entity.Property(e => e.EndDate).HasColumnType("datetime");
             entity.Property(e => e.StartDate).HasColumnType("datetime");
 
+            entity.HasOne(d => d.AcademicYear).WithMany(p => p.Programs)
+                .HasForeignKey(d => d.AcademicYearId)
+                .HasConstraintName("FK_Program_Year");
+
             entity.HasOne(d => d.AccountIdCreatorNavigation).WithMany(p => p.Programs)
                 .HasForeignKey(d => d.AccountIdCreator)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -159,10 +177,6 @@ public partial class MyDbContext : DbContext
                 .HasForeignKey(d => d.FacultyId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Program_Faculty");
-
-            entity.HasOne(d => d.Position).WithMany(p => p.Programs)
-                .HasForeignKey(d => d.PositionId)
-                .HasConstraintName("FK_Program_Position");
         });
 
         modelBuilder.Entity<Question>(entity =>

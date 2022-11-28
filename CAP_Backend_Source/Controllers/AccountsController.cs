@@ -2,8 +2,10 @@
 using CAP_Backend_Source.Modules.Account.Request;
 using CAP_Backend_Source.Modules.Account.Services;
 using CAP_Backend_Source.Services.User.Request;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace CAP_Backend_Source.Controllers
 {
@@ -20,6 +22,14 @@ namespace CAP_Backend_Source.Controllers
         public async Task<IActionResult> GetAsync()
         {
             return Ok(await _accountService.GetAsync());
+        }
+
+        [HttpGet("me")]
+        [Authorize]
+        public async Task<IActionResult> GetProfile()
+        {
+            int id = int.Parse(User.FindFirstValue("id").ToString());
+            return Ok(await _accountService.GetProfile(id));
         }
 
         [HttpPost]

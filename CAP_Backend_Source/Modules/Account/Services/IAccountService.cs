@@ -19,6 +19,7 @@ namespace CAP_Backend_Source.Modules.Account.Services
         Task<Models.Account?> UpdateAsync(int id, UpdateAccountRequest request);
 
         Task<List<Models.Account>> GetAsync();
+        Task<Models.Account> GetProfile(int id);
 
         Task<string> LoginAsync(LoginRequest request);
     }
@@ -136,6 +137,11 @@ namespace CAP_Backend_Source.Modules.Account.Services
 
             var token = jwtTokenHandler.CreateToken(tokenDescriptor);
             return jwtTokenHandler.WriteToken(token);
+        }
+
+        public async Task<Models.Account> GetProfile(int id)
+        {
+            return await _myDbContext.Accounts.Where(x => x.AccountId == id).Include(x => x.Role).FirstOrDefaultAsync();
         }
     }
 }

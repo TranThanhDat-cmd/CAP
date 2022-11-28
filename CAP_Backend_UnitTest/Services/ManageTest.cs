@@ -157,11 +157,10 @@ namespace CAP_Backend_UnitTest.Services
             var _test = await _myDbContext.Tests.FirstOrDefaultAsync();
             var request = new UpdateTestRequest()
             {
-                TestTitle = "",
                 Time = 5,
                 IsRandom = false,
             };
-            await Assert.ThrowsAsync<BadRequestException>(() => testResposity.UpdateTest(_test.TestId, request));
+            await Assert.ThrowsAsync<BadRequestException>(() => testResposity.UpdateTest(1, request));
         }
         #endregion
     }

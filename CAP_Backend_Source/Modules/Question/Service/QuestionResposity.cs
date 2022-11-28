@@ -16,12 +16,12 @@ namespace CAP_Backend_Source.Modules.Question.Service
         public async Task<int> CreateQuestion(CreateQuestionRequest request)
         {
             #region Check Input
-            if(request.TestsId <= 0)
+            if(request.TestsId <= 0 || request.TestsId == null)
             {
                 throw new BadRequestException("TestsId cannot be null");
             }
 
-            if(request.TypeId <= 0)
+            if(request.TypeId <= 0 || request.TypeId == null)
             {
                 throw new BadRequestException("TypeId cannot be null");
             }
@@ -31,7 +31,7 @@ namespace CAP_Backend_Source.Modules.Question.Service
                 throw new BadRequestException("QuestionTitle cannot be left blank");
             }
 
-            if(request.Score <= 0)
+            if(request.Score <= 0 || request.Score == null)
             {
                 throw new BadRequestException("Score cannot be null");
             }
@@ -122,6 +122,21 @@ namespace CAP_Backend_Source.Modules.Question.Service
             {
                 throw new BadRequestException("Question not found");
             }
+
+            if (request.TypeId <= 0 || request.TypeId == null)
+            {
+                throw new BadRequestException("TypeId cannot be null");
+            }
+
+            if (request.QuestionTitle == null || request.QuestionTitle == "")
+            {
+                throw new BadRequestException("QuestionTitle cannot be left blank");
+            }
+
+            if (request.Score <= 0 || request.Score == null)
+            {
+                throw new BadRequestException("Score cannot be null");
+            }
             #endregion
             _question.TypeId = request.TypeId;
             _question.QuestionTitle = request.QuestionTitle;
@@ -134,6 +149,17 @@ namespace CAP_Backend_Source.Modules.Question.Service
                     int i = 0;
                     foreach (var question in request.questionContents)
                     {
+                        #region Check Input
+                        if (question.Content == null || question.Content.Length == 0)
+                        {
+                            throw new BadRequestException("QuestionTitle cannot be left blank");
+                        }
+
+                        if (question.IsAnswer == null)
+                        {
+                            question.IsAnswer = false;
+                        }
+                        #endregion
                         listQC[i].Content = question.Content;
                         listQC[i].IsAnswer = question.IsAnswer;
                         i++;

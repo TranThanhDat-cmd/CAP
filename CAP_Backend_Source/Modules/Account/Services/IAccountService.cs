@@ -125,7 +125,7 @@ namespace CAP_Backend_Source.Modules.Account.Services
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim("Id",account.AccountId.ToString()),
+                    new Claim("id",account.AccountId.ToString()),
                 }),
                 Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKey), SecurityAlgorithms.HmacSha256Signature)

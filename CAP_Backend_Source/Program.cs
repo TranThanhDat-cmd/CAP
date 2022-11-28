@@ -15,6 +15,9 @@ using CAP_Backend_Source.Modules.Programs.Service;
 using CAP_Backend_Source.Modules.Tests.Service;
 using CAP_Backend_Source.Modules.TypeTest.Service;
 using CAP_Backend_Source.Modules.Question.Service;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +44,25 @@ builder.Services.AddControllers(options =>
     })
     .ConfigureApiBehaviorOptions(options => options.InvalidModelStateResponseFactory = context => new BadRequestObjectResult(new { message = context.ModelState?.FirstOrDefault(x => x.Value.ValidationState is ModelValidationState.Invalid).Value?.Errors[0].ErrorMessage }));
 
+
+var secretKey = Encoding.ASCII.GetBytes("81426C51-951E-4ACC-8541-000F32540381");
+TokenValidationParameters tokenValidationParameters = new TokenValidationParameters
+{
+    ValidateIssuer = false,
+    ValidateAudience = false,
+    ValidateIssuerSigningKey = true,
+    IssuerSigningKey = new SymmetricSecurityKey(secretKey),
+
+};
+
+builder.Services.AddSingleton(tokenValidationParameters);
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(jwt =>
+{
+    jwt.SaveToken = true;
+    jwt.TokenValidationParameters = tokenValidationParameters;
+
+});
 
 
 builder.Services.AddScoped<IAccountService, AccountService>();

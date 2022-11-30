@@ -207,6 +207,21 @@ namespace CAP_Backend_UnitTest.Services
         }
         #endregion
 
+        #region Delete Question Content
+        [Fact]
+        public async Task DeleteQuestionContent_Success()
+        {
+            var respone = await _questionResposity.DeleteQuestionContent(1);
+            Assert.IsType<string>(respone);
+            Assert.Equal("Successfully deleted question content", respone);
+        }
+        [Fact]
+        public async Task DeleteQuestionContent_Fail_IdQuestionIsNull()
+        {
+            await Assert.ThrowsAsync<BadRequestException>(() => _questionResposity.DeleteQuestionContent(0));
+        }
+        #endregion
+
         #region Get List Question By Test Id
         [Fact]
         public async Task GetListQuestionByTestId_Success()
@@ -222,12 +237,12 @@ namespace CAP_Backend_UnitTest.Services
         public async Task UpdateQuestion_Success()
         {
             var _test = await _myDbContext.Tests.FirstOrDefaultAsync();
-            var _listQuestionContents = new List<QuestionContentRequest>()
+            var _listQuestionContents = new List<UpdateQuestionContentRequest>()
             {
-                new QuestionContentRequest() { QuestionId = 1, Content = "Unit Test of Content A", IsAnswer = false },
-                new QuestionContentRequest() { QuestionId = 1, Content = "Unit Test of Content B", IsAnswer = false },
-                new QuestionContentRequest() { QuestionId = 1, Content = "Unit Test of Content C", IsAnswer = false },
-                new QuestionContentRequest() { QuestionId = 1, Content = "Unit Test of Content D", IsAnswer = false }
+                new UpdateQuestionContentRequest() { QuestionContentId = 1, Content = "Unit Test of Content A", IsAnswer = false },
+                new UpdateQuestionContentRequest() { QuestionContentId = 1, Content = "Unit Test of Content B", IsAnswer = false },
+                new UpdateQuestionContentRequest() { QuestionContentId = 1, Content = "Unit Test of Content C", IsAnswer = false },
+                new UpdateQuestionContentRequest() { QuestionContentId = 1, Content = "Unit Test of Content D", IsAnswer = false }
             };
             var request = new UpdateQuestionRequest()
             {
@@ -244,12 +259,12 @@ namespace CAP_Backend_UnitTest.Services
         public async Task UpdateQuestion_Fail_IdQuestionIsNull()
         {
             var _test = await _myDbContext.Tests.FirstOrDefaultAsync();
-            var _listQuestionContents = new List<QuestionContentRequest>()
+            var _listQuestionContents = new List<UpdateQuestionContentRequest>()
             {
-                new QuestionContentRequest() { QuestionId = 1, Content = "Unit Test of Content A", IsAnswer = false },
-                new QuestionContentRequest() { QuestionId = 1, Content = "Unit Test of Content B", IsAnswer = false },
-                new QuestionContentRequest() { QuestionId = 1, Content = "Unit Test of Content C", IsAnswer = false },
-                new QuestionContentRequest() { QuestionId = 1, Content = "Unit Test of Content D", IsAnswer = false }
+                new UpdateQuestionContentRequest() { QuestionContentId = 1, Content = "Unit Test of Content A", IsAnswer = false },
+                new UpdateQuestionContentRequest() { QuestionContentId = 1, Content = "Unit Test of Content B", IsAnswer = false },
+                new UpdateQuestionContentRequest() { QuestionContentId = 1, Content = "Unit Test of Content C", IsAnswer = false },
+                new UpdateQuestionContentRequest() { QuestionContentId = 1, Content = "Unit Test of Content D", IsAnswer = false }
             };
             var request = new UpdateQuestionRequest()
             {
@@ -264,12 +279,12 @@ namespace CAP_Backend_UnitTest.Services
         public async Task UpdateQuestion_Fail_TypeIdIsNull()
         {
             var _test = await _myDbContext.Tests.FirstOrDefaultAsync();
-            var _listQuestionContents = new List<QuestionContentRequest>()
+            var _listQuestionContents = new List<UpdateQuestionContentRequest>()
             {
-                new QuestionContentRequest() { QuestionId = 1, Content = "Unit Test of Content A", IsAnswer = false },
-                new QuestionContentRequest() { QuestionId = 1, Content = "Unit Test of Content B", IsAnswer = false },
-                new QuestionContentRequest() { QuestionId = 1, Content = "Unit Test of Content C", IsAnswer = false },
-                new QuestionContentRequest() { QuestionId = 1, Content = "Unit Test of Content D", IsAnswer = false }
+                new UpdateQuestionContentRequest() { QuestionContentId = 1, Content = "Unit Test of Content A", IsAnswer = false },
+                new UpdateQuestionContentRequest() { QuestionContentId = 1, Content = "Unit Test of Content B", IsAnswer = false },
+                new UpdateQuestionContentRequest() { QuestionContentId = 1, Content = "Unit Test of Content C", IsAnswer = false },
+                new UpdateQuestionContentRequest() { QuestionContentId = 1, Content = "Unit Test of Content D", IsAnswer = false }
             };
             var request = new UpdateQuestionRequest()
             {
@@ -283,12 +298,12 @@ namespace CAP_Backend_UnitTest.Services
         public async Task UpdateQuestion_Fail_QuestionTitleIsBlank()
         {
             var _test = await _myDbContext.Tests.FirstOrDefaultAsync();
-            var _listQuestionContents = new List<QuestionContentRequest>()
+            var _listQuestionContents = new List<UpdateQuestionContentRequest>()
             {
-                new QuestionContentRequest() { QuestionId = 1, Content = "Unit Test of Content A", IsAnswer = false },
-                new QuestionContentRequest() { QuestionId = 1, Content = "Unit Test of Content B", IsAnswer = false },
-                new QuestionContentRequest() { QuestionId = 1, Content = "Unit Test of Content C", IsAnswer = false },
-                new QuestionContentRequest() { QuestionId = 1, Content = "Unit Test of Content D", IsAnswer = false }
+                new UpdateQuestionContentRequest() { QuestionContentId = 1, Content = "Unit Test of Content A", IsAnswer = false },
+                new UpdateQuestionContentRequest() { QuestionContentId = 1, Content = "Unit Test of Content B", IsAnswer = false } , 
+                new UpdateQuestionContentRequest() { QuestionContentId = 1, Content = "Unit Test of Content C", IsAnswer = false } , 
+                new UpdateQuestionContentRequest() { QuestionContentId = 1, Content = "Unit Test of Content D", IsAnswer = false }
             };
             var request = new UpdateQuestionRequest()
             {
@@ -302,12 +317,12 @@ namespace CAP_Backend_UnitTest.Services
         public async Task UpdateQuestion_Fail_ScoreIsNull()
         {
             var _test = await _myDbContext.Tests.FirstOrDefaultAsync();
-            var _listQuestionContents = new List<QuestionContentRequest>()
+            var _listQuestionContents = new List<UpdateQuestionContentRequest>()
             {
-                new QuestionContentRequest() { QuestionId = 1, Content = "Unit Test of Content A", IsAnswer = false },
-                new QuestionContentRequest() { QuestionId = 1, Content = "Unit Test of Content B", IsAnswer = false },
-                new QuestionContentRequest() { QuestionId = 1, Content = "Unit Test of Content C", IsAnswer = false },
-                new QuestionContentRequest() { QuestionId = 1, Content = "Unit Test of Content D", IsAnswer = false }
+                new UpdateQuestionContentRequest() { QuestionContentId = 1, Content = "Unit Test of Content A", IsAnswer = false },
+                new UpdateQuestionContentRequest() { QuestionContentId = 1, Content = "Unit Test of Content B", IsAnswer = false } , 
+                new UpdateQuestionContentRequest() { QuestionContentId = 1, Content = "Unit Test of Content C", IsAnswer = false } , 
+                new UpdateQuestionContentRequest() { QuestionContentId = 1, Content = "Unit Test of Content D", IsAnswer = false }
             };
             var request = new UpdateQuestionRequest()
             {
@@ -321,12 +336,12 @@ namespace CAP_Backend_UnitTest.Services
         public async Task UpdateQuestion_Fail_ContentIsBlank()
         {
             var _test = await _myDbContext.Tests.FirstOrDefaultAsync();
-            var _listQuestionContents = new List<QuestionContentRequest>()
+            var _listQuestionContents = new List<UpdateQuestionContentRequest>()
             {
-                new QuestionContentRequest() { QuestionId = 1, Content = "", IsAnswer = false },
-                new QuestionContentRequest() { QuestionId = 1, Content = "", IsAnswer = false },
-                new QuestionContentRequest() { QuestionId = 1, Content = "Unit Test of Content C", IsAnswer = false },
-                new QuestionContentRequest() { QuestionId = 1, Content = "Unit Test of Content D", IsAnswer = false }
+                new UpdateQuestionContentRequest() { QuestionContentId = 1, Content = "", IsAnswer = false },
+                new UpdateQuestionContentRequest() { QuestionContentId = 1, Content = "", IsAnswer = false } , 
+                new UpdateQuestionContentRequest() { QuestionContentId = 1, Content = "Unit Test of Content C", IsAnswer = false } , 
+                new UpdateQuestionContentRequest() { QuestionContentId = 1, Content = "Unit Test of Content D", IsAnswer = false }
             };
             var request = new UpdateQuestionRequest()
             {

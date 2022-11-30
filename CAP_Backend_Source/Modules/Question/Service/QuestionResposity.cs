@@ -104,6 +104,20 @@ namespace CAP_Backend_Source.Modules.Question.Service
             return "Successfully deleted question";
         }
 
+        public async Task<string> DeleteQuestionContent(int id)
+        {
+            var _questionContent = await _myDbContext.QuestionContents.SingleOrDefaultAsync(qc => qc.QuestionContentId == id);
+            #region Check Input
+            if (_questionContent == null)
+            {
+                throw new BadRequestException("Question Content not found");
+            }
+            #endregion
+            _myDbContext.QuestionContents.Remove(_questionContent);
+            await _myDbContext.SaveChangesAsync();
+            return "Successfully deleted question content";
+        }
+
         public async Task<List<Models.Question>> GetListQuestionByTestId(int id)
         {
             List<Models.Question> _listQuestions = await _myDbContext.Questions.Where(q => q.TestsId == id).Include(q => q.QuestionContents).ToListAsync();
@@ -160,8 +174,11 @@ namespace CAP_Backend_Source.Modules.Question.Service
                             question.IsAnswer = false;
                         }
                         #endregion
-                        listQC[i].Content = question.Content;
-                        listQC[i].IsAnswer = question.IsAnswer;
+                        if (listQC[i].QuestionContentId == question.QuestionContentId)
+                        {
+                            listQC[i].Content = question.Content;
+                            listQC[i].IsAnswer = question.IsAnswer;
+                        }
                         i++;
                     }
                 }

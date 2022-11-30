@@ -105,7 +105,7 @@ builder.Services.AddScoped<ITestService, TestResposity>();
 builder.Services.AddScoped<IQuestionService, QuestionResposity>();
 var app = builder.Build();
 
-
+app.UseStaticFiles();
 app.UseSwagger();
 app.UseSwaggerUI();
 

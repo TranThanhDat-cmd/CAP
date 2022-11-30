@@ -15,7 +15,7 @@ public partial class Program
 
     public string ProgramName { get; set; } = null!;
 
-    public string Image { get; set; } = null!;
+    public string? Image { get; set; }
 
     public DateTime StartDate { get; set; }
 
@@ -33,11 +33,11 @@ public partial class Program
 
     public virtual AcademicYear? AcademicYear { get; set; }
 
-    public virtual Account AccountIdCreatorNavigation { get; set; } = null!;
+    public virtual Account? AccountIdCreatorNavigation { get; set; }
 
-    public virtual Category Category { get; set; } = null!;
+    public virtual Category? Category { get; set; }
 
     public virtual ICollection<ContentProgram> ContentPrograms { get; } = new List<ContentProgram>();
 
-    public virtual Faculty Faculty { get; set; } = null!;
+    public virtual Faculty? Faculty { get; set; }
 }

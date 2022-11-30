@@ -165,17 +165,14 @@ public partial class MyDbContext : DbContext
 
             entity.HasOne(d => d.AccountIdCreatorNavigation).WithMany(p => p.Programs)
                 .HasForeignKey(d => d.AccountIdCreator)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Program_Account");
 
             entity.HasOne(d => d.Category).WithMany(p => p.Programs)
                 .HasForeignKey(d => d.CategoryId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Program_Category");
 
             entity.HasOne(d => d.Faculty).WithMany(p => p.Programs)
                 .HasForeignKey(d => d.FacultyId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Program_Faculty");
         });
 

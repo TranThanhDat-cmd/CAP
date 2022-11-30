@@ -40,6 +40,7 @@ namespace CAP_Backend_Source.Controllers
         {
             return Ok(await _questionService.DeleteQuestion(id));
         }
+
         [HttpDelete("content/{id}")]
         public async Task<IActionResult> DeleteQuestionContent(int id)
         {

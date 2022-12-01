@@ -40,6 +40,11 @@ namespace CAP_Backend_Source.Modules.Account.Services
                 throw new BadRequestException("RoleId Not Found");
             }
 
+            if (_myDbContext.Accounts.Any(x=>x.Email == request.Email))
+            {
+                throw new BadRequestException("Email Exits");
+            }
+
             var acc = new Models.Account()
             {
                 Email = request.Email!,

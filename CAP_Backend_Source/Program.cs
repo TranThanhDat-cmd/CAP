@@ -103,6 +103,8 @@ builder.Services.AddScoped<IProgramService, ProgramService>();
 builder.Services.AddScoped<ITypeTestService, TypeTestResposity>();
 builder.Services.AddScoped<ITestService, TestResposity>();
 builder.Services.AddScoped<IQuestionService, QuestionResposity>();
+builder.Services.AddScoped<IPositionService, PositionService>();
+builder.Services.AddScoped<IAcademicYearService, AcademicYearService>();
 var app = builder.Build();
 
 app.UseStaticFiles();

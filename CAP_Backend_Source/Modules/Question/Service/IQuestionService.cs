@@ -8,6 +8,7 @@ namespace CAP_Backend_Source.Modules.Question.Service
         Task<string> CreateQuestionContent(int id, CreateQuestionRequest request);
         Task<string> UpdateQuestion(int id, UpdateQuestionRequest request);
         Task<string> DeleteQuestion(int id);
+        Task<string> DeleteQuestionContent(int id);
         Task<List<Models.Question>> GetListQuestionByTestId(int id);
     }
 }

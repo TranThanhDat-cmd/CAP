@@ -22,6 +22,14 @@
             
             public List<QuestionContentRequest> questionContents { get; set; }
         }
+        public class UpdateQuestionContentRequest
+        {
+            public int? QuestionContentId { get; set; }
+
+            public string? Content { get; set; }
+
+            public bool? IsAnswer { get; set; }
+        }
         public class UpdateQuestionRequest
         {
             public int TypeId { get; set; }
@@ -30,7 +38,7 @@
 
             public double? Score { get; set; }
 
-            public List<QuestionContentRequest> questionContents { get; set; }
+            public List<UpdateQuestionContentRequest> questionContents { get; set; }
         }
     }
 }

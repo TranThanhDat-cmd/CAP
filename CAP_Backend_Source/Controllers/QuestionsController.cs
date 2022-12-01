@@ -29,16 +29,22 @@ namespace CAP_Backend_Source.Controllers
             return Ok(await _questionService.CreateQuestionContent(id, request));
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateQuestion(int id, UpdateQuestionRequest request)
         {
             return Ok(await _questionService.UpdateQuestion(id, request));
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteQuestion(int id)
         {
             return Ok(await _questionService.DeleteQuestion(id));
+        }
+
+        [HttpDelete("content/{id}")]
+        public async Task<IActionResult> DeleteQuestionContent(int id)
+        {
+            return Ok(await _questionService.DeleteQuestionContent(id));
         }
     }
 }

@@ -174,7 +174,16 @@ namespace CAP_Backend_Source.Modules.Question.Service
                             question.IsAnswer = false;
                         }
                         #endregion
-                        if (listQC[i].QuestionContentId == question.QuestionContentId)
+                        if (question.QuestionContentId == null)
+                        {
+                            var content = new QuestionContent()
+                            {
+                                QuestionId = id,
+                                Content = question.Content,
+                                IsAnswer = question.IsAnswer,
+                            };
+                            await _myDbContext.QuestionContents.AddAsync(content);
+                        }else if (question.QuestionContentId != null && listQC[i].QuestionContentId == question.QuestionContentId)
                         {
                             listQC[i].Content = question.Content;
                             listQC[i].IsAnswer = question.IsAnswer;

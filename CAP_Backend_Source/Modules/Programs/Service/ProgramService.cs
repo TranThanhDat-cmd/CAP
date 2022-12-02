@@ -132,7 +132,11 @@ namespace CAP_Backend_Source.Modules.Programs.Service
         {
 
 
-            return await _myDbContext.Programs.FirstOrDefaultAsync(x => x.ProgramId == id);
+            return await _myDbContext.Programs
+                .Include(x => x.Category)
+                .Include(x => x.Faculty)
+                .Include(x => x.AcademicYear)
+                .FirstOrDefaultAsync(x => x.ProgramId == id);
 
         }
 
@@ -148,7 +152,11 @@ namespace CAP_Backend_Source.Modules.Programs.Service
 
         public async Task<List<Models.Program>> GetAsync()
         {
-            return await _myDbContext.Programs.ToListAsync();
+            return await _myDbContext.Programs
+                .Include(x => x.Category)
+                .Include(x => x.Faculty)
+                .Include(x => x.AcademicYear)
+                .ToListAsync();
         }
 
         public async Task DeleteContentAsync(int id)
@@ -175,7 +183,7 @@ namespace CAP_Backend_Source.Modules.Programs.Service
                 Chapter = request.Chapter,
                 Content = request.Content,
                 ContentType = request.ContentType,
-                ProgramId= request.ProgramId,
+                ProgramId = request.ProgramId,
             };
 
             _myDbContext.ContentPrograms.Add(content);

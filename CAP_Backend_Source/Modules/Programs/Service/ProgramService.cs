@@ -61,6 +61,7 @@ namespace CAP_Backend_Source.Modules.Programs.Service
                 AcademicYearId = request.AcademicYearId,
                 Positions = request.Positions,
                 Semester = request.Semester,
+                Descriptions = request.Descriptions
             };
 
             await _myDbContext.Programs.AddAsync(program);
@@ -104,6 +105,7 @@ namespace CAP_Backend_Source.Modules.Programs.Service
             program.AcademicYearId = request.AcademicYearId;
             program.Positions = request.Positions;
             program.Semester = request.Semester;
+            program.Descriptions = request.Descriptions;
 
             await _myDbContext.SaveChangesAsync();
             return program;

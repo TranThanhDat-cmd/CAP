@@ -22,6 +22,7 @@ namespace CAP_Backend_Source.Modules.Programs.Request
         public int? Coin { get; set; }
 
         public string? Positions { get; set; }
+        public string? Descriptions { get; set; }
 
         public int? AcademicYearId { get; set; }
 

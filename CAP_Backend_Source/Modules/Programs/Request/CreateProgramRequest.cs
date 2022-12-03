@@ -21,6 +21,7 @@ namespace CAP_Backend_Source.Modules.Programs.Request
 
         public int? Coin { get; set; }
 
+        [Required]
         public string? Positions { get; set; }
         public string? Descriptions { get; set; }
 

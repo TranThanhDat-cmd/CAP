@@ -3,6 +3,7 @@ using CAP_Backend_Source.Modules.FileStorage.Service;
 using CAP_Backend_Source.Modules.Programs.Request;
 using Infrastructure.Exceptions.HttpExceptions;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace CAP_Backend_Source.Modules.Programs.Service
 {
@@ -132,11 +133,18 @@ namespace CAP_Backend_Source.Modules.Programs.Service
         {
 
 
-            return await _myDbContext.Programs
+            var program =  await _myDbContext.Programs
                 .Include(x => x.Category)
                 .Include(x => x.Faculty)
                 .Include(x => x.AcademicYear)
                 .FirstOrDefaultAsync(x => x.ProgramId == id);
+            if (program == null)
+            {
+                return null;
+            }
+            var programIds = Array.ConvertAll(program.Positions!.Split(","), s => int.Parse(s));
+            program.Position = _myDbContext.Positions.Where(x => programIds.Contains(x.PositionId)).ToList();
+            return program;
 
         }
 
@@ -152,11 +160,17 @@ namespace CAP_Backend_Source.Modules.Programs.Service
 
         public async Task<List<Models.Program>> GetAsync()
         {
-            return await _myDbContext.Programs
+            return (await _myDbContext.Programs
                 .Include(x => x.Category)
                 .Include(x => x.Faculty)
                 .Include(x => x.AcademicYear)
-                .ToListAsync();
+                .ToListAsync())
+                .ConvertAll(x =>
+                {
+                    var programIds = Array.ConvertAll(x.Positions!.Split(","), s => int.Parse(s));
+                    x.Position = _myDbContext.Positions.Where(x => programIds.Contains(x.PositionId)).ToList();
+                    return x;
+                });
         }
 
         public async Task DeleteContentAsync(int id)
@@ -184,6 +198,8 @@ namespace CAP_Backend_Source.Modules.Programs.Service
                 Content = request.Content,
                 ContentType = request.ContentType,
                 ProgramId = request.ProgramId,
+                ContentTitle = request.ContentTitle,
+                ContentDescription = request.ContentDescription,
             };
 
             _myDbContext.ContentPrograms.Add(content);
@@ -207,6 +223,8 @@ namespace CAP_Backend_Source.Modules.Programs.Service
             content.Content = request.Content;
             content.ContentType = request.ContentType;
             content.ProgramId = request.ProgramId;
+            content.ContentTitle = request.ContentTitle;
+            content.ContentDescription = request.ContentDescription;
             await _myDbContext.SaveChangesAsync();
             return content;
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CAP_Backend_Source.Models;
 
@@ -26,7 +27,10 @@ public partial class Program
 
     public int? Coin { get; set; }
 
-    public string? Positions { get; set; }
+    public string Positions { get; set; } = null!;
+
+    [NotMapped]
+    public List<Position> Position { get; set; }
 
     public int? AcademicYearId { get; set; }
 

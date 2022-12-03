@@ -11,6 +11,9 @@ namespace CAP_Backend_Source.Modules.Programs.Request
 
         public string ContentType { get; set; } = null!;
 
+        public string? ContentTitle { get; set; }
+        public string? ContentDescription { get; set; }
+
         [Required]
         public string Content { get; set; } = null!;
     }

@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CAP_Backend_Source.Models;
 
 public partial class Program
 {
     public int ProgramId { get; set; }
+
+    [NotMapped]
+    public List<Position> Position { get; set; }
 
     public int? AccountIdCreator { get; set; }
 

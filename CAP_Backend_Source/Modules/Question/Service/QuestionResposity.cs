@@ -1,4 +1,5 @@
-﻿using CAP_Backend_Source.Models;
+﻿using Azure.Core;
+using CAP_Backend_Source.Models;
 using Infrastructure.Exceptions.HttpExceptions;
 using Microsoft.EntityFrameworkCore;
 using static CAP_Backend_Source.Modules.Question.Request.QuestionRequest;
@@ -44,6 +45,13 @@ namespace CAP_Backend_Source.Modules.Question.Service
                 Score = request.Score 
             };
             await _myDbContext.Questions.AddAsync(question);
+            var _test = await _myDbContext.Tests.SingleOrDefaultAsync(t => t.TestId == request.TestsId);
+            var _content = await _myDbContext.ContentPrograms.SingleOrDefaultAsync(cp => cp.ContentId == _test.ContentId);
+            var _program = await _myDbContext.Programs.SingleOrDefaultAsync(p => p.ProgramId == _content.ProgramId);
+            if (_program != null)
+            {
+                _program.Status = "Lưu nháp";
+            }
             await _myDbContext.SaveChangesAsync();
             return question.QuestionId;
         }
@@ -100,6 +108,13 @@ namespace CAP_Backend_Source.Modules.Question.Service
             await _myDbContext.SaveChangesAsync();
 
             _myDbContext.Questions.Remove(_question);
+            var _test = await _myDbContext.Tests.SingleOrDefaultAsync(t => t.TestId == _question.TestsId);
+            var _content = await _myDbContext.ContentPrograms.SingleOrDefaultAsync(cp => cp.ContentId == _test.ContentId);
+            var _program = await _myDbContext.Programs.SingleOrDefaultAsync(p => p.ProgramId == _content.ProgramId);
+            if (_program != null)
+            {
+                _program.Status = "Lưu nháp";
+            }
             await _myDbContext.SaveChangesAsync();
             return "Successfully deleted question";
         }
@@ -114,6 +129,14 @@ namespace CAP_Backend_Source.Modules.Question.Service
             }
             #endregion
             _myDbContext.QuestionContents.Remove(_questionContent);
+            var _question = await _myDbContext.Questions.SingleOrDefaultAsync(q => q.QuestionId == _questionContent.QuestionId);
+            var _test = await _myDbContext.Tests.SingleOrDefaultAsync(t => t.TestId == _question.TestsId);
+            var _content = await _myDbContext.ContentPrograms.SingleOrDefaultAsync(cp => cp.ContentId == _test.ContentId);
+            var _program = await _myDbContext.Programs.SingleOrDefaultAsync(p => p.ProgramId == _content.ProgramId);
+            if (_program != null)
+            {
+                _program.Status = "Lưu nháp";
+            }
             await _myDbContext.SaveChangesAsync();
             return "Successfully deleted question content";
         }
@@ -204,6 +227,13 @@ namespace CAP_Backend_Source.Modules.Question.Service
                         await _myDbContext.QuestionContents.AddAsync(content);
                     }
                 }
+            }
+            var _test = await _myDbContext.Tests.SingleOrDefaultAsync(t => t.TestId == _question.TestsId);
+            var _content = await _myDbContext.ContentPrograms.SingleOrDefaultAsync(cp => cp.ContentId == _test.ContentId);
+            var _program = await _myDbContext.Programs.SingleOrDefaultAsync(p => p.ProgramId == _content.ProgramId);
+            if (_program != null)
+            {
+                _program.Status = "Lưu nháp";
             }
             await _myDbContext.SaveChangesAsync();
             return "Successfully edited the question";

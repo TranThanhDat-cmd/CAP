@@ -1,4 +1,5 @@
-﻿using CAP_Backend_Source.Models;
+﻿using Azure.Core;
+using CAP_Backend_Source.Models;
 using CAP_Backend_Source.Modules.Question.Service;
 using Infrastructure.Exceptions.HttpExceptions;
 using Microsoft.EntityFrameworkCore;
@@ -48,6 +49,12 @@ namespace CAP_Backend_Source.Modules.Tests.Service
                 IsRandom = request.IsRandom,
             };
             await _myDbContext.Tests.AddAsync(test);
+            var _content = await _myDbContext.ContentPrograms.SingleOrDefaultAsync(cp => cp.ContentId == request.ContentId);
+            var _program = await _myDbContext.Programs.SingleOrDefaultAsync(p => p.ProgramId == _content.ProgramId);
+            if (_program != null)
+            {
+                _program.Status = "Lưu nháp";
+            }
             await _myDbContext.SaveChangesAsync();
             return test;
         }
@@ -65,8 +72,13 @@ namespace CAP_Backend_Source.Modules.Tests.Service
             {
                 await _questionService.DeleteQuestion(_question.QuestionId);
             }
-
             _myDbContext.Tests.Remove(_test);
+            var _content = await _myDbContext.ContentPrograms.SingleOrDefaultAsync(cp => cp.ContentId == _test.ContentId);
+            var _program = await _myDbContext.Programs.SingleOrDefaultAsync(p => p.ProgramId == _content.ProgramId);
+            if (_program != null)
+            {
+                _program.Status = "Lưu nháp";
+            }
             await _myDbContext.SaveChangesAsync();
             return "Successful Delete";
         }
@@ -105,6 +117,12 @@ namespace CAP_Backend_Source.Modules.Tests.Service
             _test.TestTitle = request.TestTitle;
             _test.Time = request.Time;
             _test.IsRandom= request.IsRandom;
+            var _content = await _myDbContext.ContentPrograms.SingleOrDefaultAsync(cp => cp.ContentId == _test.ContentId);
+            var _program = await _myDbContext.Programs.SingleOrDefaultAsync(p => p.ProgramId == _content.ProgramId);
+            if(_program != null)
+            {
+                _program.Status = "Lưu nháp";
+            }
             await _myDbContext.SaveChangesAsync();
             return _test;
         }

@@ -151,12 +151,12 @@ namespace CAP_Backend_Source.Modules.Programs.Service
                 .Include(x => x.Category)
                 .Include(x => x.Faculty)
                 .Include(x => x.AcademicYear)
-                .Include(X=>X.ProgramPositions).ThenInclude(X=>X.Program)
+                .Include(X=>X.ProgramPositions).ThenInclude(X=>X.Position)
                 .FirstOrDefaultAsync(x => x.ProgramId == id);
-            if (program == null)
-            {
-                return null;
-            }
+            program.AcademicYear.Programs = null;
+            program.Category.Programs = null;
+            program.Faculty.Programs = null;
+
             return program;
 
         }
@@ -173,12 +173,18 @@ namespace CAP_Backend_Source.Modules.Programs.Service
 
         public async Task<List<Models.Program>> GetAsync()
         {
-            return await _myDbContext.Programs
+            return (await _myDbContext.Programs
                 .Include(x => x.Category)
                 .Include(x => x.Faculty)
                 .Include(x => x.AcademicYear)
-                .Include(X => X.ProgramPositions).ThenInclude(X => X.Program)
-                .ToListAsync();
+                .Include(X => X.ProgramPositions).ThenInclude(x=>x.Position)
+                .ToListAsync()).ConvertAll(x =>
+                {
+                    x.AcademicYear.Programs = null;
+                    x.Category.Programs = null;
+                    x.Faculty.Programs = null;
+                    return x;
+                });
                 
         }
 

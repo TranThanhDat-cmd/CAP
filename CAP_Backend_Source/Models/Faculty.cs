@@ -9,7 +9,7 @@ public partial class Faculty
 
     public string? FacultyName { get; set; }
 
-    public virtual ICollection<Account> Accounts { get; } = new List<Account>();
+    public virtual ICollection<Account> Accounts { get; set; } 
 
-    public virtual ICollection<Program> Programs { get; } = new List<Program>();
+    public virtual ICollection<Program> Programs { get; set; } 
 }

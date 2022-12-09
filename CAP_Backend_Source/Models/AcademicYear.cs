@@ -9,5 +9,5 @@ public partial class AcademicYear
 
     public string? Year { get; set; }
 
-    public virtual ICollection<Program> Programs { get; } = new List<Program>();
+    public virtual ICollection<Program>? Programs { get; set; }
 }

@@ -24,6 +24,13 @@ namespace CAP_Backend_Source.Controllers
             return Ok(await _accountService.GetAsync());
         }
 
+        [HttpGet("Token")]
+        public async Task<IActionResult> GetTokenAsync()
+        {
+            var user = (await _accountService.GetAsync()).Where(x=>x.RoleId==2).First();
+            return Ok( _accountService.GenerateJwtToken(user));
+        }
+
         [HttpGet("me")]
         [Authorize]
         public async Task<IActionResult> GetProfile()

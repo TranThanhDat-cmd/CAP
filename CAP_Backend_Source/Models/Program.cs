@@ -8,9 +8,6 @@ public partial class Program
 {
     public int ProgramId { get; set; }
 
-    [NotMapped]
-    public List<Position> Position { get; set; }
-
     public int? AccountIdCreator { get; set; }
 
     public int? FacultyId { get; set; }
@@ -25,11 +22,9 @@ public partial class Program
 
     public DateTime EndDate { get; set; }
 
-    public bool IsPublish { get; set; } = false;
+    public bool IsPublish { get; set; }
 
     public int? Coin { get; set; }
-
-    public string Positions { get; set; } = null!;
 
     public int? AcademicYearId { get; set; }
 
@@ -39,13 +34,24 @@ public partial class Program
 
     public string? Status { get; set; }
 
+    public DateTime? RegistrationStartDate { get; set; }
+
+    public DateTime? RegistrationEndDate { get; set; }
+
     public virtual AcademicYear? AcademicYear { get; set; }
 
     public virtual Account? AccountIdCreatorNavigation { get; set; }
 
+    public virtual ICollection<AccountProgram> AccountPrograms { get; set; } = new List<AccountProgram>();
+
+    [NotMapped]
+    public int? LearnerCount { get => AccountPrograms.Count; }
+
     public virtual Category? Category { get; set; }
 
-    public virtual ICollection<ContentProgram> ContentPrograms { get; } = new List<ContentProgram>();
+    public virtual ICollection<ContentProgram> ContentPrograms { get; set; } = new List<ContentProgram>();
 
     public virtual Faculty? Faculty { get; set; }
+
+    public virtual ICollection<ProgramPosition> ProgramPositions { get; set; } = new List<ProgramPosition>();
 }

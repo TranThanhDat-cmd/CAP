@@ -4,6 +4,7 @@ using CAP_Backend_Source.Modules.Programs.Request;
 using Infrastructure.Exceptions.HttpExceptions;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace CAP_Backend_Source.Modules.Programs.Service
 {
@@ -57,12 +58,19 @@ namespace CAP_Backend_Source.Modules.Programs.Service
                 Image = request.Image == null ? null : _fileStorageService.SaveFile(request.Image),
                 StartDate = request.StartDate,
                 EndDate = request.EndDate,
-                IsPublish = request.IsPublish,
+                IsPublish = false,
                 Coin = request.Coin,
                 AcademicYearId = request.AcademicYearId,
-                Positions = request.Positions,
                 Semester = request.Semester,
-                Descriptions = request.Descriptions
+                Descriptions = request.Descriptions,
+                RegistrationEndDate = request.RegistrationEndDate,
+                RegistrationStartDate = request.RegistrationStartDate,
+                Status = request.Status,
+                ProgramPositions = request.PositionIds!.Select(x => new ProgramPosition()
+                {
+                    CreatedAt= DateTime.Now,
+                    PositionId = x,
+                }).ToList(),
             };
 
             await _myDbContext.Programs.AddAsync(program);
@@ -94,19 +102,25 @@ namespace CAP_Backend_Source.Modules.Programs.Service
 
             }
 
-
             program.FacultyId = request.FacultyId;
             program.CategoryId = request.CategoryId;
             program.ProgramName = request.ProgramName;
             program.Image = request.Image == null ? program.Image : _fileStorageService.SaveFile(request.Image);
             program.StartDate = request.StartDate;
             program.EndDate = request.EndDate;
-            program.IsPublish = request.IsPublish;
+            program.IsPublish = false;
             program.Coin = request.Coin;
             program.AcademicYearId = request.AcademicYearId;
-            program.Positions = request.Positions;
             program.Semester = request.Semester;
             program.Descriptions = request.Descriptions;
+            program.RegistrationEndDate = request.RegistrationEndDate;
+            program.RegistrationStartDate = request.RegistrationStartDate;
+            program.Status = request.Status;
+            program.ProgramPositions = request.PositionIds.Select(x => new ProgramPosition()
+            {
+                CreatedAt = DateTime.Now,
+                PositionId = x,
+            }).ToList();
 
             await _myDbContext.SaveChangesAsync();
             return program;
@@ -137,13 +151,12 @@ namespace CAP_Backend_Source.Modules.Programs.Service
                 .Include(x => x.Category)
                 .Include(x => x.Faculty)
                 .Include(x => x.AcademicYear)
+                .Include(X=>X.ProgramPositions).ThenInclude(X=>X.Program)
                 .FirstOrDefaultAsync(x => x.ProgramId == id);
             if (program == null)
             {
                 return null;
             }
-            var programIds = Array.ConvertAll(program.Positions!.Split(","), s => int.Parse(s));
-            program.Position = _myDbContext.Positions.Where(x => programIds.Contains(x.PositionId)).ToList();
             return program;
 
         }
@@ -160,17 +173,13 @@ namespace CAP_Backend_Source.Modules.Programs.Service
 
         public async Task<List<Models.Program>> GetAsync()
         {
-            return (await _myDbContext.Programs
+            return await _myDbContext.Programs
                 .Include(x => x.Category)
                 .Include(x => x.Faculty)
                 .Include(x => x.AcademicYear)
-                .ToListAsync())
-                .ConvertAll(x =>
-                {
-                    var programIds = Array.ConvertAll(x.Positions!.Split(","), s => int.Parse(s));
-                    x.Position = _myDbContext.Positions.Where(x => programIds.Contains(x.PositionId)).ToList();
-                    return x;
-                });
+                .Include(X => X.ProgramPositions).ThenInclude(X => X.Program)
+                .ToListAsync();
+                
         }
 
         public async Task DeleteContentAsync(int id)

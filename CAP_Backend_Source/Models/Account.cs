@@ -23,6 +23,8 @@ public partial class Account
 
     public DateTime? LastLogin { get; set; }
 
+    public virtual ICollection<AccountProgram> AccountPrograms { get; } = new List<AccountProgram>();
+
     public virtual Faculty? Faculty { get; set; }
 
     public virtual ICollection<Learner> LearnerAccountIdApproverNavigations { get; } = new List<Learner>();

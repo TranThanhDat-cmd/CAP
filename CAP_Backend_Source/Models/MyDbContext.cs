@@ -19,6 +19,8 @@ public partial class MyDbContext : DbContext
 
     public virtual DbSet<Account> Accounts { get; set; }
 
+    public virtual DbSet<AccountProgram> AccountPrograms { get; set; }
+
     public virtual DbSet<Answer> Answers { get; set; }
 
     public virtual DbSet<Category> Categories { get; set; }
@@ -32,6 +34,8 @@ public partial class MyDbContext : DbContext
     public virtual DbSet<Position> Positions { get; set; }
 
     public virtual DbSet<Program> Programs { get; set; }
+
+    public virtual DbSet<ProgramPosition> ProgramPositions { get; set; }
 
     public virtual DbSet<Question> Questions { get; set; }
 
@@ -87,6 +91,25 @@ public partial class MyDbContext : DbContext
                 .HasForeignKey(d => d.RoleId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_ROLE");
+        });
+
+        modelBuilder.Entity<AccountProgram>(entity =>
+        {
+            entity.HasKey(e => new { e.ProgramId, e.AccountId }).HasName("PK__AccountP__066CBA02DA8E8603");
+
+            entity.ToTable("AccountProgram");
+
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+
+            entity.HasOne(d => d.Account).WithMany(p => p.AccountPrograms)
+                .HasForeignKey(d => d.AccountId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("AccProgramn_AccountId");
+
+            entity.HasOne(d => d.Program).WithMany(p => p.AccountPrograms)
+                .HasForeignKey(d => d.ProgramId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("AccProgramn_ProgramId");
         });
 
         modelBuilder.Entity<Answer>(entity =>
@@ -157,6 +180,8 @@ public partial class MyDbContext : DbContext
             entity.ToTable("Program");
 
             entity.Property(e => e.EndDate).HasColumnType("datetime");
+            entity.Property(e => e.RegistrationEndDate).HasColumnType("datetime");
+            entity.Property(e => e.RegistrationStartDate).HasColumnType("datetime");
             entity.Property(e => e.StartDate).HasColumnType("datetime");
 
             entity.HasOne(d => d.AcademicYear).WithMany(p => p.Programs)
@@ -174,6 +199,25 @@ public partial class MyDbContext : DbContext
             entity.HasOne(d => d.Faculty).WithMany(p => p.Programs)
                 .HasForeignKey(d => d.FacultyId)
                 .HasConstraintName("FK_Program_Faculty");
+        });
+
+        modelBuilder.Entity<ProgramPosition>(entity =>
+        {
+            entity.HasKey(e => new { e.ProgramId, e.PositionId }).HasName("PK__ProgramP__F32ED9FF37B5C4F1");
+
+            entity.ToTable("ProgramPosition");
+
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+
+            entity.HasOne(d => d.Position).WithMany(p => p.ProgramPositions)
+                .HasForeignKey(d => d.PositionId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("ProgramPosition_PositionId");
+
+            entity.HasOne(d => d.Program).WithMany(p => p.ProgramPositions)
+                .HasForeignKey(d => d.ProgramId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("ProgramPosition_ProgramID");
         });
 
         modelBuilder.Entity<Question>(entity =>

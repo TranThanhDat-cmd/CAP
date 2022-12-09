@@ -22,6 +22,7 @@ namespace CAP_Backend_Source.Modules.Account.Services
         Task<Models.Account> GetProfile(int id);
 
         Task<string> LoginAsync(LoginRequest request);
+        string GenerateJwtToken(Models.Account account);
     }
 
     public class AccountService : IAccountService
@@ -122,7 +123,7 @@ namespace CAP_Backend_Source.Modules.Account.Services
                 .FirstOrDefaultAsync())!);
         }
 
-        private string GenerateJwtToken(Models.Account account)
+        public string GenerateJwtToken(Models.Account account)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
             var secretKey = Encoding.ASCII.GetBytes("81426C51-951E-4ACC-8541-000F32540381");
@@ -132,7 +133,7 @@ namespace CAP_Backend_Source.Modules.Account.Services
                 {
                     new Claim("id",account.AccountId.ToString()),
                 }),
-                Expires = DateTime.UtcNow.AddDays(1),
+                Expires = DateTime.UtcNow.AddYears(2),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKey), SecurityAlgorithms.HmacSha256Signature)
             };
             if (account.Role != null)

@@ -16,18 +16,20 @@ namespace CAP_Backend_Source.Modules.Programs.Request
         public DateTime StartDate { get; set; }
         [Required]
         public DateTime EndDate { get; set; }
-        [Required]
-        public bool IsPublish { get; set; }
 
         public int? Coin { get; set; }
+        public DateTime? RegistrationStartDate { get; set; }
 
+        public DateTime? RegistrationEndDate { get; set; }
         [Required]
-        public string? Positions { get; set; }
+        public List<int>? PositionIds { get; set; }
         public string? Descriptions { get; set; }
 
         public int? AcademicYearId { get; set; }
 
         public int? Semester { get; set; }
+
+        public string? Status { get; set; }
 
     }
 }

@@ -10,4 +10,6 @@ public partial class Position
     public string? PositionName { get; set; }
 
     public virtual ICollection<Account> Accounts { get; } = new List<Account>();
+
+    public virtual ICollection<ProgramPosition> ProgramPositions { get; } = new List<ProgramPosition>();
 }

@@ -154,6 +154,10 @@ namespace CAP_Backend_Source.Modules.Programs.Service
                 .Include(x => x.AcademicYear)
                 .Include(X => X.ProgramPositions).ThenInclude(X => X.Position)
                 .FirstOrDefaultAsync(x => x.ProgramId == id);
+            if (program == null)
+            {
+                return null;
+            }
             program.AcademicYear.Programs = null;
             program.Category.Programs = null;
             program.Faculty.Programs = null;

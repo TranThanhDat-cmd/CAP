@@ -68,7 +68,7 @@ namespace CAP_Backend_Source.Modules.Programs.Service
                 Status = request.Status,
                 ProgramPositions = request.PositionIds!.Select(x => new ProgramPosition()
                 {
-                    CreatedAt= DateTime.Now,
+                    CreatedAt = DateTime.Now,
                     PositionId = x,
                 }).ToList(),
             };
@@ -94,7 +94,8 @@ namespace CAP_Backend_Source.Modules.Programs.Service
             }
 
 
-            Models.Program? program = await _myDbContext.Programs.FirstOrDefaultAsync(x => x.ProgramId == id);
+            Models.Program? program = await _myDbContext.Programs.Where(x => x.ProgramId == id)
+                .Include(x => x.ProgramPositions).FirstOrDefaultAsync();
 
             if (program == null)
             {
@@ -147,15 +148,24 @@ namespace CAP_Backend_Source.Modules.Programs.Service
         {
 
 
-            var program =  await _myDbContext.Programs
+            var program = await _myDbContext.Programs
                 .Include(x => x.Category)
                 .Include(x => x.Faculty)
                 .Include(x => x.AcademicYear)
-                .Include(X=>X.ProgramPositions).ThenInclude(X=>X.Position)
+                .Include(X => X.ProgramPositions).ThenInclude(X => X.Position)
                 .FirstOrDefaultAsync(x => x.ProgramId == id);
+            if (program == null)
+            {
+                return null;
+            }
             program.AcademicYear.Programs = null;
             program.Category.Programs = null;
             program.Faculty.Programs = null;
+            program.ProgramPositions = program.ProgramPositions.Select(x =>
+            {
+                x.Position.ProgramPositions = null;
+                return x;
+            }).ToList();
 
             return program;
 
@@ -177,15 +187,20 @@ namespace CAP_Backend_Source.Modules.Programs.Service
                 .Include(x => x.Category)
                 .Include(x => x.Faculty)
                 .Include(x => x.AcademicYear)
-                .Include(X => X.ProgramPositions).ThenInclude(x=>x.Position)
+                .Include(X => X.ProgramPositions).ThenInclude(x => x.Position)
                 .ToListAsync()).ConvertAll(x =>
                 {
                     x.AcademicYear.Programs = null;
                     x.Category.Programs = null;
                     x.Faculty.Programs = null;
+                    x.ProgramPositions = x.ProgramPositions.Select(x =>
+                    {
+                        x.Position.ProgramPositions = null;
+                        return x;
+                    }).ToList();
                     return x;
                 });
-                
+
         }
 
         public async Task DeleteContentAsync(int id)

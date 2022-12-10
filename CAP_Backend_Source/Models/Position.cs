@@ -11,5 +11,5 @@ public partial class Position
 
     public virtual ICollection<Account> Accounts { get; } = new List<Account>();
 
-    public virtual ICollection<ProgramPosition> ProgramPositions { get; } = new List<ProgramPosition>();
+    public virtual ICollection<ProgramPosition> ProgramPositions { get; set; } = new List<ProgramPosition>();
 }

@@ -25,9 +25,10 @@ namespace CAP_Backend_UnitTest.Services
         [Fact]
         public async Task CreateTest_Success()
         {
+            var _content = await _myDbContext.ContentPrograms.FirstOrDefaultAsync();
             var request = new CreateTestRequest()
             {
-                ContentId = 1,
+                ContentId = _content.ContentId,
                 TestTitle = "Unit Test of Create Test",
                 Time = 5,
                 Chapter = 1,
@@ -36,7 +37,7 @@ namespace CAP_Backend_UnitTest.Services
             var respose = await testResposity.CreateTest(request);
 
             Assert.NotNull(respose);
-            Assert.Equal(1, respose.ContentId);
+            Assert.Equal(_content.ContentId, respose.ContentId);
             Assert.Equal(request.TestTitle, respose.TestTitle);
             Assert.Equal(5, respose.Time);
             Assert.True(respose.Chapter == 1);
@@ -59,9 +60,10 @@ namespace CAP_Backend_UnitTest.Services
         [Fact]
         public async Task CreateTest_Fail_TestTitleIsBlank()
         {
+            var _content = await _myDbContext.ContentPrograms.FirstOrDefaultAsync();
             var request = new CreateTestRequest()
             {
-                ContentId = 1,
+                ContentId = _content.ContentId,
                 Time = 5,
                 Chapter = 1,
                 IsRandom = false,
@@ -72,9 +74,10 @@ namespace CAP_Backend_UnitTest.Services
         [Fact]
         public async Task CreateTest_Fail_ChapterIsNull()
         {
+            var _content = await _myDbContext.ContentPrograms.FirstOrDefaultAsync();
             var request = new CreateTestRequest()
             {
-                ContentId = 1,
+                ContentId = _content.ContentId,
                 TestTitle = "Unit Test of Create Test",
                 Time = 5,
                 IsRandom = false,
@@ -105,7 +108,8 @@ namespace CAP_Backend_UnitTest.Services
         public async Task GetTestByContentId_Success()
         {
             var _test = await _myDbContext.Tests.FirstOrDefaultAsync();
-            var respose = await testResposity.GetTestByContentId(_test.TestId);
+
+            var respose = await testResposity.GetTestByContentId(_test.ContentId);
 
             Assert.Equal(_test.TestId, respose.TestId);
             Assert.Equal(_test.ContentId, respose.ContentId);

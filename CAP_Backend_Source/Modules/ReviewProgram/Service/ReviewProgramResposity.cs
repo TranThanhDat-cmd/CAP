@@ -1,6 +1,6 @@
 ﻿using CAP_Backend_Source.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+using static CAP_Backend_Source.Modules.ReviewProgram.Request.ReviewProgramRequest;
 
 namespace CAP_Backend_Source.Modules.ReviewProgram.Service
 {
@@ -18,15 +18,24 @@ namespace CAP_Backend_Source.Modules.ReviewProgram.Service
             return _listPrograms;
         }
 
-        public async Task<List<Models.Program>> GetProgramsByIdReviewer(int id)
+        public async Task<List<Reviewer>> GetProgramsByIdReviewer(int id)
         {
-            List<Models.Program> _listPrograms = new List<Models.Program>();
-            List<Models.Program> _listReviewer = await _myDbContext.Programs.Where(p => p.AccountIdCreator == id).ToListAsync();
-            foreach (var program in _listReviewer)
+            List<Reviewer> _listPrograms = await _myDbContext.Reviews.Where(r => r.AccountId == id).Include(r => r.Program).ToListAsync();
+
+            return _listPrograms;
+        }
+
+        public async Task<Reviewer> SetReviewer(CreateReviewer request)
+        {
+            var reviewer = new Reviewer() 
             {
-                
-            }
-            throw new NotImplementedException();
+                AccountId = request.AccountId,
+                ProgramId = request.ProgramId,
+            };
+
+            await _myDbContext.Reviews.AddAsync(reviewer);
+            await _myDbContext.SaveChangesAsync();
+            return reviewer;
         }
     }
 }

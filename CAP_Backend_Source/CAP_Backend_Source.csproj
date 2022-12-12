@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Modules\ReviewProgram\" />
+    <Folder Include="Modules\ReviewProgram\Request\" />
     <Folder Include="Modules\TypeTest\Service\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>

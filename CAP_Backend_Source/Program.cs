@@ -20,6 +20,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using CAP_Backend_Source.Modules.ReviewProgram.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -105,6 +106,7 @@ builder.Services.AddScoped<ITestService, TestResposity>();
 builder.Services.AddScoped<IQuestionService, QuestionResposity>();
 builder.Services.AddScoped<IPositionService, PositionService>();
 builder.Services.AddScoped<IAcademicYearService, AcademicYearService>();
+builder.Services.AddScoped<IReviewProgramService, ReviewProgramResposity>();
 var app = builder.Build();
 
 app.UseStaticFiles();

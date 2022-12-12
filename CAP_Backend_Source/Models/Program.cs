@@ -54,4 +54,8 @@ public partial class Program
     public virtual Faculty? Faculty { get; set; }
 
     public virtual ICollection<ProgramPosition> ProgramPositions { get; set; } = new List<ProgramPosition>();
+
+    public virtual ICollection<Reviewer> Reviewers { get; } = new List<Reviewer>();
+
+    public virtual ICollection<ReviewerProgram> ReviewsProgram { get; } = new List<ReviewerProgram>();
 }

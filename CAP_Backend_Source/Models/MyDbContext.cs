@@ -47,6 +47,10 @@ public partial class MyDbContext : DbContext
 
     public virtual DbSet<Test> Tests { get; set; }
 
+    public virtual DbSet<Reviewer> Reviews { get; set; }
+
+    public virtual DbSet<ReviewerProgram> ReviewsProgram { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Data Source=tuleap.vanlanguni.edu.vn,18082;Initial Catalog=CP25Team02;User ID=CP25Team02;Password=CP25Team02;TrustServerCertificate=True");
@@ -271,6 +275,40 @@ public partial class MyDbContext : DbContext
                 .HasForeignKey(d => d.ContentId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Test_ContentProgram");
+        });
+
+        modelBuilder.Entity<Reviewer>(entity =>
+        {
+            entity.HasKey(e => e.ReviewerId).HasName("PK__Reviewer__1616CFDD2306341C");
+
+            entity.ToTable("Reviewer");
+
+            entity.HasOne(d => d.Account).WithMany(p => p.Reviewers)
+                .HasForeignKey(d => d.AccountId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Reviewer_Account");
+
+            entity.HasOne(d => d.Program).WithMany(p => p.Reviewers)
+                .HasForeignKey(d => d.ProgramId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Reviewer_Program");
+        });
+
+        modelBuilder.Entity<ReviewerProgram>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Reviewer__3214EC07694E4486");
+
+            entity.ToTable("ReviewerProgram");
+
+            entity.HasOne(d => d.Account).WithMany(p => p.ReviewsProgram)
+                .HasForeignKey(d => d.AccountId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ReviewerProgram_Account");
+
+            entity.HasOne(d => d.Program).WithMany(p => p.ReviewsProgram)
+                .HasForeignKey(d => d.ProgramId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ReviewerProgram_Program");
         });
 
         OnModelCreatingPartial(modelBuilder);

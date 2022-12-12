@@ -36,4 +36,8 @@ public partial class Account
     public virtual ICollection<Program> Programs { get; } = new List<Program>();
 
     public virtual Role? Role { get; set; }
+
+    public virtual ICollection<Reviewer> Reviewers { get; } = new List<Reviewer>();
+
+    public virtual ICollection<ReviewerProgram> ReviewsProgram { get; } = new List<ReviewerProgram>();
 }

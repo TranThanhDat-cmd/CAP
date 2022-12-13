@@ -1,4 +1,5 @@
 ﻿using CAP_Backend_Source.Models;
+using Infrastructure.Exceptions.HttpExceptions;
 using Microsoft.EntityFrameworkCore;
 using static CAP_Backend_Source.Modules.ReviewProgram.Request.ReviewProgramRequest;
 
@@ -25,7 +26,7 @@ namespace CAP_Backend_Source.Modules.ReviewProgram.Service
             return _listPrograms;
         }
 
-        public async Task<Reviewer> SetReviewer(CreateReviewer request)
+        public async Task<Reviewer> SetReviewer(CreateReviewerRequest request)
         {
             var reviewer = new Reviewer() 
             {
@@ -36,6 +37,36 @@ namespace CAP_Backend_Source.Modules.ReviewProgram.Service
             await _myDbContext.Reviews.AddAsync(reviewer);
             await _myDbContext.SaveChangesAsync();
             return reviewer;
+        }
+
+        public async Task<ReviewerProgram> ApproveProgram(ApproveProgramRequest request)
+        {
+            #region Check Input
+            if (request.Approved == false && (request.Comment == null || request.Comment.Trim() == "")) 
+            {
+                throw new BadRequestException("Comment is not blank");
+            }
+            #endregion
+            var information = new ReviewerProgram()
+            {
+                ProgramId = request.ProgramId,
+                AccountId = request.AccountId,
+                Approved = request.Approved,
+                Comment = request.Comment,
+                ApprovalDate = request.ApprovalDate,
+            };
+
+            await _myDbContext.ReviewsProgram.AddAsync(information);
+            await _myDbContext.SaveChangesAsync();
+
+            return information;
+        }
+
+        public async Task<List<ReviewerProgram>> GetApprovedListByIdProgram(int id)
+        {
+            List<ReviewerProgram> _listApproved = await _myDbContext.ReviewsProgram.Where(rp => rp.ProgramId == id).ToListAsync();
+
+            return _listApproved;
         }
     }
 }

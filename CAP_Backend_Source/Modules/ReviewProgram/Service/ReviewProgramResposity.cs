@@ -41,10 +41,16 @@ namespace CAP_Backend_Source.Modules.ReviewProgram.Service
 
         public async Task<ReviewerProgram> ApproveProgram(ApproveProgramRequest request)
         {
+            var _program = await _myDbContext.Programs.SingleOrDefaultAsync(p => p.ProgramId == request.ProgramId);
             #region Check Input
             if (request.Approved == false && (request.Comment == null || request.Comment.Trim() == "")) 
             {
                 throw new BadRequestException("Comment is not blank");
+            }
+
+            if (_program == null)
+            {
+                throw new BadRequestException("Program is not found");
             }
             #endregion
             var information = new ReviewerProgram()
@@ -55,7 +61,14 @@ namespace CAP_Backend_Source.Modules.ReviewProgram.Service
                 Comment = request.Comment,
                 ApprovalDate = request.ApprovalDate,
             };
-
+            if(request.Approved == true)
+            {
+                _program.Status = "Đã duyệt";
+            }
+            else
+            {
+                _program.Status = "Từ chối";
+            }
             await _myDbContext.ReviewsProgram.AddAsync(information);
             await _myDbContext.SaveChangesAsync();
 

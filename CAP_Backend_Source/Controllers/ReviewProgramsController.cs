@@ -22,15 +22,15 @@ namespace CAP_Backend_Source.Controllers
         }
 
         [HttpGet("listprogram/{idReviewer}")]
-        public async Task<IActionResult> GetProgramsByIdReviewer(int id)
+        public async Task<IActionResult> GetProgramsByIdReviewer(int idReviewer)
         {
-            return Ok(await _reviewProgramService.GetProgramsByIdReviewer(id));
+            return Ok(await _reviewProgramService.GetProgramsByIdReviewer(idReviewer));
         }
 
         [HttpGet("listapproved/{idProgram}")]
-        public async Task<IActionResult> GetApprovedListByIdProgram(int id)
+        public async Task<IActionResult> GetApprovedListByIdProgram(int idProgram)
         {
-            return Ok(await _reviewProgramService.GetApprovedListByIdProgram(id));
+            return Ok(await _reviewProgramService.GetApprovedListByIdProgram(idProgram));
         }
 
         [HttpPost("reviewer")]

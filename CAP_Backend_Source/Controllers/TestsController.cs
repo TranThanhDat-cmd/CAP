@@ -1,4 +1,5 @@
 ﻿using CAP_Backend_Source.Modules.Tests.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using static CAP_Backend_Source.Modules.Tests.Request.TestRequest;
@@ -7,6 +8,8 @@ namespace CAP_Backend_Source.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
+
     public class TestsController : ControllerBase
     {
         private readonly ITestService _testService;

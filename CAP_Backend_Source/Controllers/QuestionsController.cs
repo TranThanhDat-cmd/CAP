@@ -1,4 +1,5 @@
 ﻿using CAP_Backend_Source.Modules.Question.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using static CAP_Backend_Source.Modules.Question.Request.QuestionRequest;
@@ -7,6 +8,8 @@ namespace CAP_Backend_Source.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
+
     public class QuestionsController : ControllerBase
     {
         private readonly IQuestionService _questionService;

@@ -21,10 +21,10 @@ namespace CAP_Backend_Source.Controllers
             return Ok(await _reviewProgramService.GetListPrograms());
         }
 
-        [HttpGet("listprogram/{idReviewer}")]
-        public async Task<IActionResult> GetProgramsByIdReviewer(int idReviewer)
+        [HttpGet("listprogram/{idAccount}")]
+        public async Task<IActionResult> GetProgramsByIdReviewer(int idAccount)
         {
-            return Ok(await _reviewProgramService.GetProgramsByIdReviewer(idReviewer));
+            return Ok(await _reviewProgramService.GetProgramsByIdReviewer(idAccount));
         }
 
         [HttpGet("listapproved/{idProgram}")]

@@ -1,5 +1,6 @@
 ﻿using CAP_Backend_Source.Modules.Category.Services;
 using CAP_Backend_Source.Modules.Faculty.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using static CAP_Backend_Source.Modules.Category.Request.CategoryRequest;
@@ -9,6 +10,8 @@ namespace CAP_Backend_Source.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
+
     public class FacultiesController : ControllerBase
     {
         private readonly IFacultyService _facultyService;
@@ -17,6 +20,7 @@ namespace CAP_Backend_Source.Controllers
             _facultyService = facultyService;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {

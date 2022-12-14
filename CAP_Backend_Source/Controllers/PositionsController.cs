@@ -18,5 +18,26 @@ namespace CAP_Backend_Source.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
             => Ok(await _positionService.GetAsync());
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetDetail([FromRoute] int id)
+            => Ok(await _positionService.DetailAsync(id));
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] string name)
+            => Ok(await _positionService.UpdateAsync(id, name));
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            await _positionService.DeleteAsync(id);
+            return Ok();
+        }
+
+        [HttpPost()]
+        public async Task<IActionResult> Create([FromBody] string name)
+        {
+            return Ok(await _positionService.CreateAsync(name));
+        }
     }
 }

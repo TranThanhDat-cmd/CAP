@@ -130,5 +130,18 @@ namespace CAP_Backend_UnitTest.Services
             Assert.Equal(_listApproved.Count(), _listApproved.Count());
         }
         #endregion
+
+        #region Send Reviewer
+        [Fact]
+        public async Task SendReviewer_Success()
+        {
+            var _program = await _myDbContext.Programs.FirstOrDefaultAsync();
+            var respose = await _reviewProgram.SendReviewer(_program.ProgramId);
+
+            var _programnew = await _myDbContext.Programs.SingleOrDefaultAsync(p => p.ProgramId == _program.ProgramId);
+            Assert.Equal("Chờ duyệt", _programnew.Status);
+            Assert.Equal("Send Reviewer Success", respose);
+        }
+        #endregion
     }
 }

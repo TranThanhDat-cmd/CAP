@@ -1,4 +1,5 @@
 ﻿using CAP_Backend_Source.Modules.Category.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using static CAP_Backend_Source.Modules.Category.Request.CategoryRequest;
@@ -7,6 +8,7 @@ namespace CAP_Backend_Source.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CategoriesController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
@@ -15,6 +17,7 @@ namespace CAP_Backend_Source.Controllers
             _categoryService = categoryService;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAll() 
         {

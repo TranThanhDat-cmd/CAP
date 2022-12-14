@@ -28,6 +28,14 @@ namespace CAP_Backend_Source.Modules.ReviewProgram.Service
 
         public async Task<Reviewer> SetReviewer(CreateReviewerRequest request)
         {
+            var _reviewer = await _myDbContext.Reviews.Where(r => r.AccountId == request.AccountId && r.ProgramId == request.ProgramId).FirstOrDefaultAsync();
+            #region Check Input
+            if (_reviewer != null)
+            {
+                throw new BadRequestException("Reviewer already exists");
+            }
+            #endregion
+
             var reviewer = new Reviewer() 
             {
                 AccountId = request.AccountId,
@@ -65,7 +73,7 @@ namespace CAP_Backend_Source.Modules.ReviewProgram.Service
             {
                 _program.Status = "Đã duyệt";
             }
-            else
+            else if(request.Approved == false)
             {
                 _program.Status = "Từ chối";
             }

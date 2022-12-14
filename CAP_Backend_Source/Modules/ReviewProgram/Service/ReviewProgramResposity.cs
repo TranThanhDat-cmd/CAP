@@ -89,5 +89,20 @@ namespace CAP_Backend_Source.Modules.ReviewProgram.Service
 
             return _listApproved;
         }
+
+        public async Task<string> SendReviewer(int idprogram)
+        {
+            var _program = await _myDbContext.Programs.SingleOrDefaultAsync(p => p.ProgramId == idprogram);
+            #region Check Input
+            if(_program == null)
+            {
+                throw new BadRequestException("Program is not found");
+            }
+            #endregion
+            _program.Status = "Chờ duyệt";
+
+            await _myDbContext.SaveChangesAsync();
+            return "Send Reviewer Success";
+        }
     }
 }

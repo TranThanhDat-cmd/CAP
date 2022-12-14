@@ -24,8 +24,8 @@ namespace CAP_Backend_Source.Controllers
             => Ok(await _academicYearService.DetailAsync(id));
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] string year)
-            => Ok(await _academicYearService.UpdateAsync(id, year));
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] BaseActionAcademicYear request)
+            => Ok(await _academicYearService.UpdateAsync(id, request));
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
@@ -35,9 +35,9 @@ namespace CAP_Backend_Source.Controllers
         }
 
         [HttpPost()]
-        public async Task<IActionResult> Create([FromBody] string year)
+        public async Task<IActionResult> Create([FromBody] BaseActionAcademicYear request)
         {
-            return Ok(await _academicYearService.CreateAsync(year));
+            return Ok(await _academicYearService.CreateAsync(request));
         }
     }
 }

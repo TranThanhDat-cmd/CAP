@@ -9,9 +9,9 @@ namespace CAP_Backend_Source.Modules.Programs.Service
     public interface IPositionService
     {
         Task<List<Position>> GetAsync();
-        Task<Position> CreateAsync(string name);
+        Task<Position> CreateAsync(BaseActionPosition request);
         Task<Position?> DetailAsync(int id);
-        Task<Position> UpdateAsync(int id, string name);
+        Task<Position> UpdateAsync(int id, BaseActionPosition request);
         Task DeleteAsync(int id);
 
     }
@@ -32,11 +32,11 @@ namespace CAP_Backend_Source.Modules.Programs.Service
             return await _myDbContext.Positions.ToListAsync();
         }
 
-        public async Task<Position> CreateAsync(string name)
+        public async Task<Position> CreateAsync(BaseActionPosition request)
         {
             var Position = new Position()
             {
-                PositionName = name
+                PositionName = request.Name
             };
             await _myDbContext.Positions.AddAsync(Position);
             await _myDbContext.SaveChangesAsync();
@@ -48,14 +48,14 @@ namespace CAP_Backend_Source.Modules.Programs.Service
             return await _myDbContext.Positions.Where(x => x.PositionId == id).FirstOrDefaultAsync();
         }
 
-        public async Task<Position> UpdateAsync(int id, string name)
+        public async Task<Position> UpdateAsync(int id, BaseActionPosition request)
         {
             var Position = await _myDbContext.Positions.Where(x => x.PositionId == id).FirstOrDefaultAsync();
             if (Position == null)
             {
                 throw new BadRequestException("Id not found");
             }
-            Position.PositionName = name;
+            Position.PositionName = request.Name;
             await _myDbContext.SaveChangesAsync();
             return Position;
         }
@@ -70,6 +70,10 @@ namespace CAP_Backend_Source.Modules.Programs.Service
             _myDbContext.Positions.Remove(Position);
             await _myDbContext.SaveChangesAsync();
         }
+    }
+    public class BaseActionPosition
+    {
+        public string? Name { get; set; }
     }
 
 }

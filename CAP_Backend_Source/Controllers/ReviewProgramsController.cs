@@ -44,5 +44,11 @@ namespace CAP_Backend_Source.Controllers
         {
             return Ok(await _reviewProgramService.ApproveProgram(request));
         }
+
+        [HttpPost("sendreviewer/{idprogram}")]
+        public async Task<IActionResult> SendReviewer(int idprogram)
+        {
+            return Ok(await _reviewProgramService.SendReviewer(idprogram));
+        }
     }
 }

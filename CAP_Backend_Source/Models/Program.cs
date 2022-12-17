@@ -25,6 +25,7 @@ public partial class Program
     public bool IsPublish { get; set; }
 
     public int? Coin { get; set; }
+    public int? Time { get; set; }
 
     public int? AcademicYearId { get; set; }
 

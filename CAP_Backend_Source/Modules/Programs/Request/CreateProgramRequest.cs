@@ -26,6 +26,7 @@ namespace CAP_Backend_Source.Modules.Programs.Request
         public string? Descriptions { get; set; }
 
         public int? AcademicYearId { get; set; }
+        public int? Time { get; set; }
 
         public int? Semester { get; set; }
 

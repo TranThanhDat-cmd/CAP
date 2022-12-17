@@ -51,6 +51,7 @@ namespace CAP_Backend_Source.Modules.Programs.Service
 
             Models.Program program = new()
             {
+                Time = request.Time,
                 AccountIdCreator = userId,
                 FacultyId = request.FacultyId,
                 CategoryId = request.CategoryId,
@@ -104,6 +105,7 @@ namespace CAP_Backend_Source.Modules.Programs.Service
             }
 
             program.FacultyId = request.FacultyId;
+            program.Time = request.Time;
             program.CategoryId = request.CategoryId;
             program.ProgramName = request.ProgramName;
             program.Image = request.Image == null ? program.Image : _fileStorageService.SaveFile(request.Image);

@@ -3,6 +3,7 @@ using CAP_Backend_Source.Modules.FileStorage.Service;
 using CAP_Backend_Source.Modules.Programs.Request;
 using Infrastructure.Exceptions.HttpExceptions;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace CAP_Backend_Source.Modules.Programs.Service
 {
@@ -73,6 +74,9 @@ namespace CAP_Backend_Source.Modules.Programs.Service
     }
     public class BaseActionPosition
     {
+
+        [Required]
+
         public string? Name { get; set; }
     }
 

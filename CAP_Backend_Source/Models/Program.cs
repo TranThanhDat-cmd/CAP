@@ -32,6 +32,7 @@ public partial class Program
     public int? Semester { get; set; }
 
     public string? Descriptions { get; set; }
+    public string? Lecturers { get; set; }
 
     public string? Status { get; set; }
 

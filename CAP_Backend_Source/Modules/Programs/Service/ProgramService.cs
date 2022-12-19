@@ -51,6 +51,8 @@ namespace CAP_Backend_Source.Modules.Programs.Service
 
             Models.Program program = new()
             {
+                Lecturers = request.Lecturers,
+                Time = request.Time,
                 AccountIdCreator = userId,
                 FacultyId = request.FacultyId,
                 CategoryId = request.CategoryId,
@@ -66,10 +68,10 @@ namespace CAP_Backend_Source.Modules.Programs.Service
                 RegistrationEndDate = request.RegistrationEndDate,
                 RegistrationStartDate = request.RegistrationStartDate,
                 Status = request.Status,
-                ProgramPositions = request.PositionIds!.Select(x => new ProgramPosition()
+                ProgramPositions = request.PositionIds!.Split(",").Select(x => new ProgramPosition()
                 {
                     CreatedAt = DateTime.Now,
-                    PositionId = x,
+                    PositionId = int.Parse(x),
                 }).ToList(),
             };
 
@@ -104,6 +106,8 @@ namespace CAP_Backend_Source.Modules.Programs.Service
             }
 
             program.FacultyId = request.FacultyId;
+            program.Lecturers = request.Lecturers;
+            program.Time = request.Time;
             program.CategoryId = request.CategoryId;
             program.ProgramName = request.ProgramName;
             program.Image = request.Image == null ? program.Image : _fileStorageService.SaveFile(request.Image);
@@ -117,11 +121,11 @@ namespace CAP_Backend_Source.Modules.Programs.Service
             program.RegistrationEndDate = request.RegistrationEndDate;
             program.RegistrationStartDate = request.RegistrationStartDate;
             program.Status = request.Status;
-            program.ProgramPositions = request.PositionIds.Select(x => new ProgramPosition()
+            program.ProgramPositions = request.PositionIds!.Split(",").Select(x => new ProgramPosition()
             {
                 CreatedAt = DateTime.Now,
-                PositionId = x,
-            }).ToList();
+                PositionId = int.Parse(x),
+            }).ToList(),
 
             await _myDbContext.SaveChangesAsync();
             return program;

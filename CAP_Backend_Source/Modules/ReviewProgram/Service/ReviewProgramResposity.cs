@@ -14,7 +14,7 @@ namespace CAP_Backend_Source.Modules.ReviewProgram.Service
         }
         public async Task<List<Models.Program>> GetListPrograms()
         {
-            List<Models.Program> _listPrograms = await _myDbContext.Programs.Where(p => p.Status == "Chờ duyệt").ToListAsync();
+            List<Models.Program> _listPrograms = await _myDbContext.Programs.Where(p => p.Status == "pending").ToListAsync();
 
             return _listPrograms;
         }
@@ -26,7 +26,7 @@ namespace CAP_Backend_Source.Modules.ReviewProgram.Service
 
             foreach (Reviewer r in _listReviewers)
             {
-                if(r.Program.Status == "Chờ duyệt")
+                if(r.Program.Status == "pending")
                 {
                     _listPrograms.Add(r);
                 }
@@ -79,11 +79,11 @@ namespace CAP_Backend_Source.Modules.ReviewProgram.Service
             };
             if(request.Approved == true)
             {
-                _program.Status = "Đã duyệt";
+                _program.Status = "approved";
             }
             else if(request.Approved == false)
             {
-                _program.Status = "Từ chối";
+                _program.Status = "denied";
             }
             await _myDbContext.ReviewsProgram.AddAsync(information);
             await _myDbContext.SaveChangesAsync();
@@ -107,7 +107,7 @@ namespace CAP_Backend_Source.Modules.ReviewProgram.Service
                 throw new BadRequestException("Program is not found");
             }
             #endregion
-            _program.Status = "Chờ duyệt";
+            _program.Status = "pending";
 
             await _myDbContext.SaveChangesAsync();
             return "Send Reviewer Success";

@@ -53,7 +53,7 @@ namespace CAP_Backend_Source.Modules.Tests.Service
             var _program = await _myDbContext.Programs.SingleOrDefaultAsync(p => p.ProgramId == _content.ProgramId);
             if (_program != null)
             {
-                _program.Status = "Lưu nháp";
+                _program.Status = "save";
             }
             await _myDbContext.SaveChangesAsync();
             return test;
@@ -77,7 +77,7 @@ namespace CAP_Backend_Source.Modules.Tests.Service
             var _program = await _myDbContext.Programs.SingleOrDefaultAsync(p => p.ProgramId == _content.ProgramId);
             if (_program != null)
             {
-                _program.Status = "Lưu nháp";
+                _program.Status = "save";
             }
             await _myDbContext.SaveChangesAsync();
             return "Successful Delete";
@@ -121,7 +121,7 @@ namespace CAP_Backend_Source.Modules.Tests.Service
             var _program = await _myDbContext.Programs.SingleOrDefaultAsync(p => p.ProgramId == _content.ProgramId);
             if(_program != null)
             {
-                _program.Status = "Lưu nháp";
+                _program.Status = "save";
             }
             await _myDbContext.SaveChangesAsync();
             return _test;

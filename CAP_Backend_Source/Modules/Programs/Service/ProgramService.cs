@@ -68,10 +68,10 @@ namespace CAP_Backend_Source.Modules.Programs.Service
                 RegistrationEndDate = request.RegistrationEndDate,
                 RegistrationStartDate = request.RegistrationStartDate,
                 Status = request.Status,
-                ProgramPositions = request.PositionIds!.Select(x => new ProgramPosition()
+                ProgramPositions = request.PositionIds!.Split(",").Select(x => new ProgramPosition()
                 {
                     CreatedAt = DateTime.Now,
-                    PositionId = x,
+                    PositionId = int.Parse(x),
                 }).ToList(),
             };
 
@@ -121,11 +121,11 @@ namespace CAP_Backend_Source.Modules.Programs.Service
             program.RegistrationEndDate = request.RegistrationEndDate;
             program.RegistrationStartDate = request.RegistrationStartDate;
             program.Status = request.Status;
-            program.ProgramPositions = request.PositionIds.Select(x => new ProgramPosition()
+            program.ProgramPositions = request.PositionIds!.Split(",").Select(x => new ProgramPosition()
             {
                 CreatedAt = DateTime.Now,
-                PositionId = x,
-            }).ToList();
+                PositionId = int.Parse(x),
+            }).ToList(),
 
             await _myDbContext.SaveChangesAsync();
             return program;

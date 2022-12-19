@@ -125,7 +125,7 @@ namespace CAP_Backend_Source.Modules.Programs.Service
             {
                 CreatedAt = DateTime.Now,
                 PositionId = int.Parse(x),
-            }).ToList(),
+            }).ToList();
 
             await _myDbContext.SaveChangesAsync();
             return program;

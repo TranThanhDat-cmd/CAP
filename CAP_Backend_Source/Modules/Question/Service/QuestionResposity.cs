@@ -50,7 +50,7 @@ namespace CAP_Backend_Source.Modules.Question.Service
             var _program = await _myDbContext.Programs.SingleOrDefaultAsync(p => p.ProgramId == _content.ProgramId);
             if (_program != null)
             {
-                _program.Status = "Lưu nháp";
+                _program.Status = "save";
             }
             await _myDbContext.SaveChangesAsync();
             return question.QuestionId;
@@ -113,7 +113,7 @@ namespace CAP_Backend_Source.Modules.Question.Service
             var _program = await _myDbContext.Programs.SingleOrDefaultAsync(p => p.ProgramId == _content.ProgramId);
             if (_program != null)
             {
-                _program.Status = "Lưu nháp";
+                _program.Status = "save";
             }
             await _myDbContext.SaveChangesAsync();
             return "Successfully deleted question";
@@ -135,7 +135,7 @@ namespace CAP_Backend_Source.Modules.Question.Service
             var _program = await _myDbContext.Programs.SingleOrDefaultAsync(p => p.ProgramId == _content.ProgramId);
             if (_program != null)
             {
-                _program.Status = "Lưu nháp";
+                _program.Status = "save";
             }
             await _myDbContext.SaveChangesAsync();
             return "Successfully deleted question content";
@@ -233,7 +233,7 @@ namespace CAP_Backend_Source.Modules.Question.Service
             var _program = await _myDbContext.Programs.SingleOrDefaultAsync(p => p.ProgramId == _content.ProgramId);
             if (_program != null)
             {
-                _program.Status = "Lưu nháp";
+                _program.Status = "save";
             }
             await _myDbContext.SaveChangesAsync();
             return "Successfully edited the question";

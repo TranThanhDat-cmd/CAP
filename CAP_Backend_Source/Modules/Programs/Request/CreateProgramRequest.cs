@@ -22,7 +22,7 @@ namespace CAP_Backend_Source.Modules.Programs.Request
 
         public DateTime? RegistrationEndDate { get; set; }
         [Required]
-        public List<int>? PositionIds { get; set; }
+        public string? PositionIds { get; set; }
         public string? Descriptions { get; set; }
         public string? Lecturers { get; set; }
 

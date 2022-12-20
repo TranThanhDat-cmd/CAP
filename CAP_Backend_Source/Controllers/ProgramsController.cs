@@ -55,6 +55,15 @@ public class ProgramsController : ControllerBase
         return Ok(await _programService.GetDetailAsync(id));
     }
 
+    [Authorize]
+    [HttpGet("{id}/Likes")]
+    public async Task<IActionResult> Like([FromRoute] int id)
+    {
+        int userID = int.Parse(User.FindFirstValue("id").ToString());
+        await _programService.Like(userID, id);
+        return Ok();
+    }
+
     [AllowAnonymous]
 
     [HttpGet("{id}/Contents")]

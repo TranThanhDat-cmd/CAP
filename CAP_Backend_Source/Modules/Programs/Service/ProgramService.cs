@@ -14,6 +14,7 @@ namespace CAP_Backend_Source.Modules.Programs.Service
         Task<Models.Program> CreateAsync(int userId, CreateProgramRequest request);
         Task<Models.Program> UpdateAsync(int id, CreateProgramRequest request);
         Task<Models.Program?> UpdateStatus(int id, UpdateStatusRequest request);
+        Task Like(int userId, int programId);
         Task DeleteAsync(int id);
         Task<Models.Program?> GetDetailAsync(int id);
         Task<List<ContentProgram>> GetContentsAsync(int id);
@@ -285,6 +286,25 @@ namespace CAP_Backend_Source.Modules.Programs.Service
             program.Status = request.Status;
             await _myDbContext.SaveChangesAsync();
             return program;
+        }
+
+        public async Task Like(int userId, int programId)
+        {
+            Models.Program? program = await _myDbContext.Programs.Where(x => x.ProgramId == id)
+                .FirstOrDefaultAsync();
+
+            if (program == null)
+            {
+                throw new BadRequestException("ProgramId Not Found");
+
+            }
+            await _myDbContext.AccountPrograms.AddAsync(new AccountProgram()
+            {
+                AccountId = userId,
+                ProgramId = programId,
+                CreatedAt = DateTime.Now,
+            });
+            await _myDbContext.SaveChangesAsync();
         }
     }
 

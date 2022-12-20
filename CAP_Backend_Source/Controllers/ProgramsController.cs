@@ -56,7 +56,7 @@ public class ProgramsController : ControllerBase
     }
 
     [Authorize]
-    [HttpGet("{id}/Likes")]
+    [HttpGet("{id}/LikeProgram")]
     public async Task<IActionResult> Like([FromRoute] int id)
     {
         int userID = int.Parse(User.FindFirstValue("id").ToString());

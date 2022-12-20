@@ -13,6 +13,7 @@ namespace CAP_Backend_Source.Modules.Programs.Service
         Task<List<Models.Program>> GetAsync();
         Task<Models.Program> CreateAsync(int userId, CreateProgramRequest request);
         Task<Models.Program> UpdateAsync(int id, CreateProgramRequest request);
+        Task<Models.Program?> UpdateStatus(int id, UpdateStatusRequest request);
         Task DeleteAsync(int id);
         Task<Models.Program?> GetDetailAsync(int id);
         Task<List<ContentProgram>> GetContentsAsync(int id);
@@ -116,7 +117,7 @@ namespace CAP_Backend_Source.Modules.Programs.Service
             program.Time = request.Time;
             program.CategoryId = request.CategoryId;
             program.ProgramName = request.ProgramName;
-            
+
             program.StartDate = request.StartDate;
             program.EndDate = request.EndDate;
             program.IsPublish = false;
@@ -268,6 +269,22 @@ namespace CAP_Backend_Source.Modules.Programs.Service
             content.ContentDescription = request.ContentDescription;
             await _myDbContext.SaveChangesAsync();
             return content;
+        }
+
+        public async Task<Models.Program?> UpdateStatus(int id, UpdateStatusRequest request)
+        {
+            Models.Program? program = await _myDbContext.Programs.Where(x => x.ProgramId == id)
+                .FirstOrDefaultAsync();
+
+            if (program == null)
+            {
+                throw new BadRequestException("ProgramId Not Found");
+
+            }
+
+            program.Status = request.Status;
+            await _myDbContext.SaveChangesAsync();
+            return program;
         }
     }
 

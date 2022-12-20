@@ -21,15 +21,21 @@ public class ProgramsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromForm]CreateProgramRequest request)
+    public async Task<IActionResult> Create([FromForm] CreateProgramRequest request)
     {
         int id = int.Parse(User.FindFirstValue("id").ToString());
-        return Ok(await _programService.CreateAsync(id,request));
+        return Ok(await _programService.CreateAsync(id, request));
     }
     [HttpPut("{id}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromForm] CreateProgramRequest request)
     {
         return Ok(await _programService.UpdateAsync(id, request));
+    }
+
+    [HttpPut("{id}/Status")]
+    public async Task<IActionResult> UpdateStatus([FromRoute] int id, [FromForm] UpdateStatusRequest request)
+    {
+        return Ok(await _programService.UpdateStatus(id, request));
     }
 
     [HttpDelete("{id}")]
@@ -49,8 +55,8 @@ public class ProgramsController : ControllerBase
         return Ok(await _programService.GetDetailAsync(id));
     }
 
-    [AllowAnonymous]    
-    
+    [AllowAnonymous]
+
     [HttpGet("{id}/Contents")]
     public async Task<IActionResult> GetContents([FromRoute] int id)
     {
@@ -74,12 +80,12 @@ public class ProgramsController : ControllerBase
     [HttpPost("/api/Contents")]
     public async Task<IActionResult> CreateContent(CreateContentRequest request)
     {
-        
+
         return Ok(await _programService.CreateContentAsync(request));
     }
 
     [HttpPut("/api/Contents/{contentId}")]
-    public async Task<IActionResult> UpdateContent([FromRoute] int contentId, [FromBody]CreateContentRequest request)
+    public async Task<IActionResult> UpdateContent([FromRoute] int contentId, [FromBody] CreateContentRequest request)
     {
 
         return Ok(await _programService.UpdateContentAsync(contentId, request));

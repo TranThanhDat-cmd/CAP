@@ -290,7 +290,7 @@ namespace CAP_Backend_Source.Modules.Programs.Service
 
         public async Task Like(int userId, int programId)
         {
-            Models.Program? program = await _myDbContext.Programs.Where(x => x.ProgramId == id)
+            Models.Program? program = await _myDbContext.Programs.Where(x => x.ProgramId == programId)
                 .FirstOrDefaultAsync();
 
             if (program == null)

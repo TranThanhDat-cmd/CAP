@@ -23,7 +23,7 @@ namespace CAP_Backend_UnitTest.Services
         [Fact]
         public async Task GetListPrograms_Success()
         {
-            List<Program> _listprogram = await _myDbContext.Programs.Where(p => p.Status == "Chờ duyệt").ToListAsync();
+            List<Program> _listprogram = await _myDbContext.Programs.Where(p => p.Status == "pending").ToListAsync();
             var respose = await _reviewProgram.GetListPrograms();
 
             Assert.Equal(_listprogram.Count(), respose.Count());
@@ -83,7 +83,7 @@ namespace CAP_Backend_UnitTest.Services
             var respose = await _reviewProgram.ApproveProgram(request);
             var _product = await _myDbContext.Programs.SingleOrDefaultAsync(p => p.ProgramId == 17);
             Assert.True(respose.Approved);
-            Assert.Equal("Đã duyệt", _product.Status);
+            Assert.Equal("approved", _product.Status);
         }
         [Fact]
         public async Task RefuseProgram_Success()
@@ -100,7 +100,7 @@ namespace CAP_Backend_UnitTest.Services
             var _product = await _myDbContext.Programs.SingleOrDefaultAsync(p => p.ProgramId == 17);
             var respose = await _reviewProgram.ApproveProgram(request);
             Assert.False(respose.Approved);
-            Assert.Equal("Từ chối", _product.Status);
+            Assert.Equal("denied", _product.Status);
         }
         [Fact]
         public async Task RefuseProgram_Fail_CommentIsBlank()
@@ -139,7 +139,7 @@ namespace CAP_Backend_UnitTest.Services
             var respose = await _reviewProgram.SendReviewer(_program.ProgramId);
 
             var _programnew = await _myDbContext.Programs.SingleOrDefaultAsync(p => p.ProgramId == _program.ProgramId);
-            Assert.Equal("Chờ duyệt", _programnew.Status);
+            Assert.Equal("pending", _programnew.Status);
             Assert.Equal("Send Reviewer Success", respose);
         }
         #endregion

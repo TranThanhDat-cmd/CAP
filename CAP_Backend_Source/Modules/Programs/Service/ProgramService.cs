@@ -105,12 +105,18 @@ namespace CAP_Backend_Source.Modules.Programs.Service
 
             }
 
+            if (request.Image != null)
+            {
+                _fileStorageService.DeleteFile(program.Image!);
+                program.Image = _fileStorageService.SaveFile(request.Image!);
+            }
+
             program.FacultyId = request.FacultyId;
             program.Lecturers = request.Lecturers;
             program.Time = request.Time;
             program.CategoryId = request.CategoryId;
             program.ProgramName = request.ProgramName;
-            program.Image = request.Image == null ? program.Image : _fileStorageService.SaveFile(request.Image);
+            
             program.StartDate = request.StartDate;
             program.EndDate = request.EndDate;
             program.IsPublish = false;
@@ -125,7 +131,7 @@ namespace CAP_Backend_Source.Modules.Programs.Service
             {
                 CreatedAt = DateTime.Now,
                 PositionId = int.Parse(x),
-            }).ToList(),
+            }).ToList();
 
             await _myDbContext.SaveChangesAsync();
             return program;
@@ -143,6 +149,7 @@ namespace CAP_Backend_Source.Modules.Programs.Service
                 throw new BadRequestException("ProgramId Not Found");
 
             }
+            _fileStorageService.DeleteFile(program.Image!);
             _myDbContext.Programs.Remove(program);
             await _myDbContext.SaveChangesAsync();
 

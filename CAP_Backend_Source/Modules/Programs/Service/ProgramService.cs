@@ -13,6 +13,8 @@ namespace CAP_Backend_Source.Modules.Programs.Service
         Task<List<Models.Program>> GetAsync();
         Task<Models.Program> CreateAsync(int userId, CreateProgramRequest request);
         Task<Models.Program> UpdateAsync(int id, CreateProgramRequest request);
+        Task<Models.Program?> UpdateStatus(int id, UpdateStatusRequest request);
+        Task Like(int userId, int programId);
         Task DeleteAsync(int id);
         Task<Models.Program?> GetDetailAsync(int id);
         Task<List<ContentProgram>> GetContentsAsync(int id);
@@ -105,12 +107,18 @@ namespace CAP_Backend_Source.Modules.Programs.Service
 
             }
 
+            if (request.Image != null)
+            {
+                _fileStorageService.DeleteFile(program.Image!);
+                program.Image = _fileStorageService.SaveFile(request.Image!);
+            }
+
             program.FacultyId = request.FacultyId;
             program.Lecturers = request.Lecturers;
             program.Time = request.Time;
             program.CategoryId = request.CategoryId;
             program.ProgramName = request.ProgramName;
-            program.Image = request.Image == null ? program.Image : _fileStorageService.SaveFile(request.Image);
+
             program.StartDate = request.StartDate;
             program.EndDate = request.EndDate;
             program.IsPublish = false;
@@ -125,7 +133,7 @@ namespace CAP_Backend_Source.Modules.Programs.Service
             {
                 CreatedAt = DateTime.Now,
                 PositionId = int.Parse(x),
-            }).ToList(),
+            }).ToList();
 
             await _myDbContext.SaveChangesAsync();
             return program;
@@ -143,6 +151,7 @@ namespace CAP_Backend_Source.Modules.Programs.Service
                 throw new BadRequestException("ProgramId Not Found");
 
             }
+            _fileStorageService.DeleteFile(program.Image!);
             _myDbContext.Programs.Remove(program);
             await _myDbContext.SaveChangesAsync();
 
@@ -261,6 +270,41 @@ namespace CAP_Backend_Source.Modules.Programs.Service
             content.ContentDescription = request.ContentDescription;
             await _myDbContext.SaveChangesAsync();
             return content;
+        }
+
+        public async Task<Models.Program?> UpdateStatus(int id, UpdateStatusRequest request)
+        {
+            Models.Program? program = await _myDbContext.Programs.Where(x => x.ProgramId == id)
+                .FirstOrDefaultAsync();
+
+            if (program == null)
+            {
+                throw new BadRequestException("ProgramId Not Found");
+
+            }
+
+            program.Status = request.Status;
+            await _myDbContext.SaveChangesAsync();
+            return program;
+        }
+
+        public async Task Like(int userId, int programId)
+        {
+            Models.Program? program = await _myDbContext.Programs.Where(x => x.ProgramId == id)
+                .FirstOrDefaultAsync();
+
+            if (program == null)
+            {
+                throw new BadRequestException("ProgramId Not Found");
+
+            }
+            await _myDbContext.AccountPrograms.AddAsync(new AccountProgram()
+            {
+                AccountId = userId,
+                ProgramId = programId,
+                CreatedAt = DateTime.Now,
+            });
+            await _myDbContext.SaveChangesAsync();
         }
     }
 

@@ -10,13 +10,13 @@ namespace CAP_Backend_Source.Modules.Programs.Service
 {
     public interface IProgramService
     {
-        Task<List<Models.Program>> GetAsync();
+        Task<List<Models.Program>> GetAsync(int? userId = default);
         Task<Models.Program> CreateAsync(int userId, CreateProgramRequest request);
         Task<Models.Program> UpdateAsync(int id, CreateProgramRequest request);
         Task<Models.Program?> UpdateStatus(int id, UpdateStatusRequest request);
-        Task Like(int userId, int programId);
+        Task Like(int userId, int programId, bool isLike);
         Task DeleteAsync(int id);
-        Task<Models.Program?> GetDetailAsync(int id);
+        Task<Models.Program?> GetDetailAsync(int id, int? userId = default);
         Task<List<ContentProgram>> GetContentsAsync(int id);
         Task<ContentProgram?> GetContentAsync(int id);
         Task<ContentProgram> CreateContentAsync(CreateContentRequest request);
@@ -157,10 +157,8 @@ namespace CAP_Backend_Source.Modules.Programs.Service
 
         }
 
-        public async Task<Models.Program?> GetDetailAsync(int id)
+        public async Task<Models.Program?> GetDetailAsync(int id, int? userId = default)
         {
-
-
             var program = await _myDbContext.Programs
                 .Include(x => x.Category)
                 .Include(x => x.Faculty)
@@ -174,6 +172,7 @@ namespace CAP_Backend_Source.Modules.Programs.Service
             program.AcademicYear.Programs = null;
             program.Category.Programs = null;
             program.Faculty.Programs = null;
+            program.IsLike = userId != default && _myDbContext.AccountPrograms.Any(x => x.AccountId == userId && x.ProgramId == program.ProgramId);
             program.ProgramPositions = program.ProgramPositions.Select(x =>
             {
                 x.Position.ProgramPositions = null;
@@ -194,7 +193,7 @@ namespace CAP_Backend_Source.Modules.Programs.Service
             return await _myDbContext.ContentPrograms.Where(x => x.ContentId == id).FirstOrDefaultAsync();
         }
 
-        public async Task<List<Models.Program>> GetAsync()
+        public async Task<List<Models.Program>> GetAsync(int? userId = default)
         {
             return (await _myDbContext.Programs
                 .Include(x => x.Category)
@@ -203,6 +202,7 @@ namespace CAP_Backend_Source.Modules.Programs.Service
                 .Include(X => X.ProgramPositions).ThenInclude(x => x.Position)
                 .ToListAsync()).ConvertAll(x =>
                 {
+                    x.IsLike = userId != default && _myDbContext.AccountPrograms.Any(y => y.AccountId == userId && y.ProgramId == x.ProgramId);
                     x.AcademicYear.Programs = null;
                     x.Category.Programs = null;
                     x.Faculty.Programs = null;
@@ -288,9 +288,9 @@ namespace CAP_Backend_Source.Modules.Programs.Service
             return program;
         }
 
-        public async Task Like(int userId, int programId)
+        public async Task Like(int userId, int programId, bool isLike)
         {
-            Models.Program? program = await _myDbContext.Programs.Where(x => x.ProgramId == id)
+            Models.Program? program = await _myDbContext.Programs.Where(x => x.ProgramId == programId)
                 .FirstOrDefaultAsync();
 
             if (program == null)
@@ -298,12 +298,27 @@ namespace CAP_Backend_Source.Modules.Programs.Service
                 throw new BadRequestException("ProgramId Not Found");
 
             }
-            await _myDbContext.AccountPrograms.AddAsync(new AccountProgram()
+
+            var accountProgram = _myDbContext.AccountPrograms.Where(x => x.AccountId == userId && programId == x.ProgramId).FirstOrDefault();
+            if (isLike)
             {
-                AccountId = userId,
-                ProgramId = programId,
-                CreatedAt = DateTime.Now,
-            });
+                if(accountProgram == null)
+                {
+                    await _myDbContext.AccountPrograms.AddAsync(new AccountProgram()
+                    {
+                        AccountId = userId,
+                        ProgramId = programId,
+                        CreatedAt = DateTime.Now,
+                    });
+                }
+            }
+            else
+            {
+                if(accountProgram != null)
+                {
+                    _myDbContext.AccountPrograms.Remove(accountProgram);
+                }
+            }
             await _myDbContext.SaveChangesAsync();
         }
     }

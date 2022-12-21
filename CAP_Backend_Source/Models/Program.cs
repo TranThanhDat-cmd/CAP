@@ -6,6 +6,9 @@ namespace CAP_Backend_Source.Models;
 
 public partial class Program
 {
+    [NotMapped]
+    public bool IsLike { get; set; }
+
     public int ProgramId { get; set; }
 
     public int? AccountIdCreator { get; set; }

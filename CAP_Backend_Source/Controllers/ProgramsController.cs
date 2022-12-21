@@ -19,7 +19,7 @@ public class ProgramsController : ControllerBase
     {
         _programService = programService;
     }
-
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> Create([FromForm] CreateProgramRequest request)
     {
@@ -47,20 +47,24 @@ public class ProgramsController : ControllerBase
     [AllowAnonymous]
     [HttpGet]
     public async Task<IActionResult> Get()
-        => Ok(await _programService.GetAsync());
+    {
+        var success =  int.TryParse(User.FindFirstValue("id").ToString(),out int id);
+        return Ok(await _programService.GetAsync(success ? id: default(int?)));
+    }
     [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<IActionResult> Get([FromRoute] int id)
     {
-        return Ok(await _programService.GetDetailAsync(id));
+        var success = int.TryParse(User.FindFirstValue("id").ToString(), out int userId);
+        return Ok(await _programService.GetDetailAsync(id, success ? userId : default(int?)));
     }
 
     [Authorize]
     [HttpGet("{id}/LikeProgram")]
-    public async Task<IActionResult> Like([FromRoute] int id)
+    public async Task<IActionResult> Like([FromRoute] int id, [FromQuery] bool isLike)
     {
         int userID = int.Parse(User.FindFirstValue("id").ToString());
-        await _programService.Like(userID, id);
+        await _programService.Like(userID, id, isLike);
         return Ok();
     }
 

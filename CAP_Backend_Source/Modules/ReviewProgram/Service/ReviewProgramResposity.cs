@@ -112,5 +112,23 @@ namespace CAP_Backend_Source.Modules.ReviewProgram.Service
             await _myDbContext.SaveChangesAsync();
             return "Send Reviewer Success";
         }
+
+        public async Task<int> GetNumberQuestion(int testId)
+        {
+            List<Models.Question> _listQuestion = await _myDbContext.Questions.Where(q => q.TestsId == testId).ToListAsync();
+            return _listQuestion.Count;
+        }
+
+        public async Task<int> GetNumberContent(int programId)
+        {
+            List<ContentProgram> _listContentPrograms = await _myDbContext.ContentPrograms.Where(cp => cp.ProgramId == programId).ToListAsync();
+            return _listContentPrograms.Count;
+        }
+
+        public async Task<string> GetStatusProgram(int programId)
+        {
+            var _program = await _myDbContext.Programs.FirstOrDefaultAsync(p => p.ProgramId == programId);
+            return _program.Status;
+        }
     }
 }

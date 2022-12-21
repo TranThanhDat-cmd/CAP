@@ -10,5 +10,8 @@ namespace CAP_Backend_Source.Modules.ReviewProgram.Service
         Task<Models.ReviewerProgram> ApproveProgram(ApproveProgramRequest request);
         Task<List<Models.ReviewerProgram>> GetApprovedListByIdProgram(int id);
         Task<string> SendReviewer(int programId);
+        Task<int> GetNumberQuestion(int testId);
+        Task<int> GetNumberContent(int programId);
+        Task<string> GetStatusProgram(int programId);
     }
 }

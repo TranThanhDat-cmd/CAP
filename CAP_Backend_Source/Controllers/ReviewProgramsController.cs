@@ -33,6 +33,24 @@ namespace CAP_Backend_Source.Controllers
             return Ok(await _reviewProgramService.GetApprovedListByIdProgram(idProgram));
         }
 
+        [HttpGet("numberquestion/{idTest}")]
+        public async Task<IActionResult> GetNumberQuestion(int idTest)
+        {
+            return Ok(await _reviewProgramService.GetNumberQuestion(idTest));
+        }
+
+        [HttpGet("numbercontent/{programId}")]
+        public async Task<IActionResult> GetNumberContent(int programId)
+        {
+            return Ok(await _reviewProgramService.GetNumberContent(programId));
+        }
+
+        [HttpGet("status/{programId}")]
+        public async Task<IActionResult> GetStatusProgram(int programId)
+        {
+            return Ok(await _reviewProgramService.GetStatusProgram(programId));
+        }
+
         [HttpPost("reviewer")]
         public async Task<IActionResult> SetReviewer(CreateReviewerRequest request)
         {

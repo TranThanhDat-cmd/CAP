@@ -202,7 +202,7 @@ namespace CAP_Backend_Source.Modules.Programs.Service
                 .Include(X => X.ProgramPositions).ThenInclude(x => x.Position)
                 .ToListAsync()).ConvertAll(x =>
                 {
-                    x.IsLike = userId != default && _myDbContext.AccountPrograms.Any(y => y.AccountId == userId && y.ProgramId == y.ProgramId);
+                    x.IsLike = userId != default && _myDbContext.AccountPrograms.Any(y => y.AccountId == userId && y.ProgramId == x.ProgramId);
                     x.AcademicYear.Programs = null;
                     x.Category.Programs = null;
                     x.Faculty.Programs = null;

@@ -48,14 +48,14 @@ public class ProgramsController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        var success =  int.TryParse(User.FindFirstValue("id").ToString(),out int id);
+        var success =  int.TryParse(User.FindFirstValue("id"),out int id);
         return Ok(await _programService.GetAsync(success ? id: default(int?)));
     }
     [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<IActionResult> Get([FromRoute] int id)
     {
-        var success = int.TryParse(User.FindFirstValue("id").ToString(), out int userId);
+        var success = int.TryParse(User.FindFirstValue("id"), out int userId);
         return Ok(await _programService.GetDetailAsync(id, success ? userId : default(int?)));
     }
 

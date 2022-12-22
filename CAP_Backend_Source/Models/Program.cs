@@ -33,6 +33,8 @@ public partial class Program
     public int? AcademicYearId { get; set; }
 
     public int? Semester { get; set; }
+    [NotMapped]
+    public int? TotalLike { get; set; }
 
     public string? Descriptions { get; set; }
     public string? Lecturers { get; set; }
@@ -50,7 +52,7 @@ public partial class Program
     public virtual ICollection<AccountProgram> AccountPrograms { get; set; } = new List<AccountProgram>();
 
     [NotMapped]
-    public int? LearnerCount { get => AccountPrograms.Count; }
+    public int? LearnerCount { get => AccountPrograms?.Count; }
 
     public virtual Category? Category { get; set; }
 

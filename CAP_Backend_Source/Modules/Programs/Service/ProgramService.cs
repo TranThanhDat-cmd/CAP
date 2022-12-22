@@ -163,12 +163,16 @@ namespace CAP_Backend_Source.Modules.Programs.Service
                 .Include(x => x.Category)
                 .Include(x => x.Faculty)
                 .Include(x => x.AcademicYear)
+                .Include(x => x.AccountPrograms)
                 .Include(X => X.ProgramPositions).ThenInclude(X => X.Position)
                 .FirstOrDefaultAsync(x => x.ProgramId == id);
             if (program == null)
             {
                 return null;
             }
+            program.TotalLike = program.AccountPrograms?.Count;
+            program.AccountPrograms = null;
+
             program.AcademicYear.Programs = null;
             program.Category.Programs = null;
             program.Faculty.Programs = null;
@@ -199,10 +203,13 @@ namespace CAP_Backend_Source.Modules.Programs.Service
                 .Include(x => x.Category)
                 .Include(x => x.Faculty)
                 .Include(x => x.AcademicYear)
+                .Include(x => x.AccountPrograms)
                 .Include(X => X.ProgramPositions).ThenInclude(x => x.Position)
                 .ToListAsync()).ConvertAll(x =>
                 {
                     x.IsLike = userId != default && _myDbContext.AccountPrograms.Any(y => y.AccountId == userId && y.ProgramId == x.ProgramId);
+                    x.TotalLike = x.AccountPrograms?.Count;
+                    x.AccountPrograms = null;
                     x.AcademicYear.Programs = null;
                     x.Category.Programs = null;
                     x.Faculty.Programs = null;
@@ -302,7 +309,7 @@ namespace CAP_Backend_Source.Modules.Programs.Service
             var accountProgram = _myDbContext.AccountPrograms.Where(x => x.AccountId == userId && programId == x.ProgramId).FirstOrDefault();
             if (isLike)
             {
-                if(accountProgram == null)
+                if (accountProgram == null)
                 {
                     await _myDbContext.AccountPrograms.AddAsync(new AccountProgram()
                     {
@@ -314,7 +321,7 @@ namespace CAP_Backend_Source.Modules.Programs.Service
             }
             else
             {
-                if(accountProgram != null)
+                if (accountProgram != null)
                 {
                     _myDbContext.AccountPrograms.Remove(accountProgram);
                 }

@@ -39,6 +39,15 @@ namespace CAP_Backend_Source.Controllers
             return Ok(await _accountService.GetProfile(id));
         }
 
+        [HttpPut("me")]
+        [Authorize]
+        public async Task<IActionResult> UpdateProfileAsync(UpdateProfileRequest request)
+        {
+            int id = int.Parse(User.FindFirstValue("id").ToString());
+            return Ok(await _accountService.UpdateProfileAsync(id, request));
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> CreateAsync(CreateAccountRequest request)
         {
@@ -54,9 +63,11 @@ namespace CAP_Backend_Source.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> LoginAsync(LoginRequest request)
         {
+            (string token, bool isFirst) = await _accountService.LoginAsync(request);
             return Ok(new
             {
-                Token = await _accountService.LoginAsync(request),
+                Token = token,
+                IsFirst = isFirst
             });
         }
     }

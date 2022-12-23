@@ -18,10 +18,13 @@ namespace CAP_Backend_Source.Modules.Account.Services
 
         Task<Models.Account?> UpdateAsync(int id, UpdateAccountRequest request);
 
+        Task<Models.Account?> UpdateProfileAsync(int id, UpdateProfileRequest request);
+
         Task<List<Models.Account>> GetAsync();
         Task<Models.Account> GetProfile(int id);
+        Task Delete(int id);
 
-        Task<string> LoginAsync(LoginRequest request);
+        Task<(string token, bool isFirst)> LoginAsync(LoginRequest request);
         string GenerateJwtToken(Models.Account account);
     }
 
@@ -86,8 +89,9 @@ namespace CAP_Backend_Source.Modules.Account.Services
             return await _myDbContext.Roles.AnyAsync(x => x.RoleId == id);
         }
 
-        public async Task<string> LoginAsync(LoginRequest request)
+        public async Task<(string token, bool isFirst)> LoginAsync(LoginRequest request)
         {
+            bool isFirst = false;
             var client = new HttpClient();
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + request.Token);
             var response = await client.GetAsync("https://graph.microsoft.com/v1.0/me");
@@ -102,6 +106,7 @@ namespace CAP_Backend_Source.Modules.Account.Services
                 .FirstOrDefaultAsync();
             if (acc is null)
             {
+                isFirst = true;
                 acc = new Models.Account
                 {
                     Email = userInfor!.Mail!,
@@ -118,9 +123,9 @@ namespace CAP_Backend_Source.Modules.Account.Services
 
             await _myDbContext.SaveChangesAsync();
 
-            return GenerateJwtToken((await _myDbContext.Accounts.Where(x => x.AccountId == acc.AccountId)
+            return (GenerateJwtToken((await _myDbContext.Accounts.Where(x => x.AccountId == acc.AccountId)
                 .Include(x => x.Role)
-                .FirstOrDefaultAsync())!);
+                .FirstOrDefaultAsync())!), isFirst);
         }
 
         public string GenerateJwtToken(Models.Account account)
@@ -148,6 +153,27 @@ namespace CAP_Backend_Source.Modules.Account.Services
         public async Task<Models.Account> GetProfile(int id)
         {
             return await _myDbContext.Accounts.Where(x => x.AccountId == id).Include(x => x.Role).FirstOrDefaultAsync();
+        }
+
+        public async Task Delete(int id)
+        {
+           var user = await _myDbContext.Accounts.Where(x => x.AccountId == id).FirstOrDefaultAsync()
+                ?? throw new BadRequestException("AccountId Not Found");
+            _myDbContext.Accounts.Remove(user);
+            _myDbContext.SaveChanges();
+        }
+
+        public async Task<Models.Account?> UpdateProfileAsync(int id, UpdateProfileRequest request)
+        {
+            var user = await _myDbContext.Accounts.Where(x => x.AccountId == id).FirstOrDefaultAsync()
+                ?? throw new BadRequestException("AccountId Not Found");
+
+            user.FacultyId = request.FacultyId;
+            user.PhoneNumber = request.PhoneNumber;
+            user.PositionId = request.PositionId;
+            user.Address = request.Address;
+            _myDbContext.SaveChanges();
+            return user;
         }
     }
 }

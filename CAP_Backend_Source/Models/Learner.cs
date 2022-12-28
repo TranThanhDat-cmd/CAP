@@ -11,7 +11,14 @@ public partial class Learner
 
     public int ProgramId { get; set; }
 
-    public int AccountIdApprover { get; set; }
+    public int? AccountIdApprover { get; set; }
+
+    public string? Status { get; set; }
+
+    public int? Score { get; set; }
+    public string? ReasonRefusal { get; set; }
+    public string? RegisterStatus { get; set; }
+    public string? Comment { get; set; }
 
     public virtual Account AccountIdApproverNavigation { get; set; } = null!;
 

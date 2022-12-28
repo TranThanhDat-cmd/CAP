@@ -10,44 +10,42 @@ namespace CAP_Backend_UnitTest.Services;
 
 public class Programs
 {
-    private ProgramService programService = new ProgramService(new MyDbContext(),new FileStorageService());
+    private ProgramService programService = new ProgramService(new MyDbContext(), new FileStorageService());
 
     [Fact]
     public async Task CreateSuccess()
     {
-        //var acc = await programService.CreateAsync(new CreateProgramRequest
-        //{
-        //    FacultyId = 1,
-        //    //AccountIdCreator = 1,
-        //    CategoryId = 1,
-        //    ProgramName = "Dat Tesst",
-        //    Image = null,
-        //    StartDate = DateTime.Now,
-        //    EndDate = DateTime.Now.AddMonths(1),
-        //    IsPublish = false,
-        //    Coin = 10
-        //});
+        var acc = await programService.CreateAsync(2, new CreateProgramRequest
+        {
+            FacultyId = 1,
+            //AccountIdCreator = 1,
+            CategoryId = 1,
+            ProgramName = "Dat Tesst",
+            Image = null,
+            StartDate = DateTime.Now,
+            EndDate = DateTime.Now.AddMonths(1),
+            Coin = 10
+        });
 
-        //Assert.NotNull(acc);
+        Assert.NotNull(acc);
     }
 
     [Fact]
     public async Task CreateFail()
     {
-        //await Assert.ThrowsAsync<BadRequestException>(() => programService.CreateAsync(new CreateProgramRequest
-        //{
-        //    FacultyId = -1,
-        //    //AccountIdCreator = -10000,
-        //    CategoryId = 1,
-        //    ProgramName = "Dat Tesst",
-        //    Image = null,
-        //    StartDate = DateTime.Now,
-        //    EndDate = DateTime.Now.AddMonths(1),
-        //    IsPublish = false,
-        //    Coin = 10
-        //}));
+        await Assert.ThrowsAsync<BadRequestException>(() => programService.CreateAsync(-1, new CreateProgramRequest
+        {
+            FacultyId = -1,
+            //AccountIdCreator = -10000,
+            CategoryId = 1,
+            ProgramName = "Dat Tesst",
+            Image = null,
+            StartDate = DateTime.Now,
+            EndDate = DateTime.Now.AddMonths(1),
+            Coin = 10
+        }));
     }
-    
+
     [Fact]
     public async Task GetSuccess()
     {

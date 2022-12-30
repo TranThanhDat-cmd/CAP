@@ -22,16 +22,8 @@ namespace CAP_Backend_Source.Modules.ReviewProgram.Service
         public async Task<List<Reviewer>> GetProgramsByIdReviewer(int id)
         {
             List<Reviewer> _listReviewers = await _myDbContext.Reviews.Where(r => r.AccountId == id).Include(r => r.Program).ToListAsync();
-            List<Reviewer> _listPrograms = new List<Reviewer>();
-
-            foreach (Reviewer r in _listReviewers)
-            {
-                if(r.Program.Status == "pending")
-                {
-                    _listPrograms.Add(r);
-                }
-            }
-            return _listPrograms;
+            
+            return _listReviewers;
         }
 
         public async Task<Reviewer> SetReviewer(CreateReviewerRequest request)

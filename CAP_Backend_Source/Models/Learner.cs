@@ -11,6 +11,8 @@ public partial class Learner
 
     public int ProgramId { get; set; }
 
+    public bool IsRegister { get; set; }
+
     public int? AccountIdApprover { get; set; }
 
     public string? Status { get; set; }

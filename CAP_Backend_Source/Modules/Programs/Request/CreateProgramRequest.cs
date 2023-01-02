@@ -25,6 +25,8 @@ namespace CAP_Backend_Source.Modules.Programs.Request
         public string? PositionIds { get; set; }
         public string? Descriptions { get; set; }
         public string? Lecturers { get; set; }
+        public int MaxLearner { get; set; }
+
 
         public int? AcademicYearId { get; set; }
         public int? Time { get; set; }

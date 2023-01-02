@@ -28,5 +28,14 @@ namespace CAP_Backend_Source.Controllers
             await _learnerServices.RegisterOrUnRegisterAsync(userID, request);
             return Ok();
         }
+
+        [Authorize]
+        [HttpPost("Import")]
+        public async Task<IActionResult> Import(ImportLearnerRequest request)
+        {
+
+            await _learnerServices.ImportAsync(request);
+            return Ok();
+        }
     }
 }

@@ -41,6 +41,8 @@ public partial class Program
 
     public string? Status { get; set; }
 
+    public int MaxLearner { get; set; }
+
     public DateTime? RegistrationStartDate { get; set; }
 
     public DateTime? RegistrationEndDate { get; set; }

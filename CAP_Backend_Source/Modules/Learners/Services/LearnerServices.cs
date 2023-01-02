@@ -32,7 +32,9 @@ namespace CAP_Backend_Source.Modules.Learners.Services
                 {
                     ProgramId = request.ProgramId,
                     AccountIdLearner = userId,
-                    RegisterStatus = "UnApproved"
+                    RegisterStatus = "UnApproved",
+                    IsRegister = true,
+
                 });
             }
             else if (!request.IsRegister && leaner != null)
@@ -58,7 +60,9 @@ namespace CAP_Backend_Source.Modules.Learners.Services
             {
                 ProgramId = request.ProgramId,
                 AccountIdLearner = accs.First(y => y.Email.ToLower() == x.ToLower()).AccountId,
-                RegisterStatus = "Approved"
+                RegisterStatus = "Approved",
+                IsRegister = false,
+
             }));
             _myDbContext.SaveChanges();
 

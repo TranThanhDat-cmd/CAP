@@ -17,7 +17,6 @@ public partial class Learner
 
     public string? Status { get; set; }
 
-    public int? Score { get; set; }
     public string? ReasonRefusal { get; set; }
     public string? RegisterStatus { get; set; }
     public string? Comment { get; set; }

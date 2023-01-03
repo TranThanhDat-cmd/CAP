@@ -95,6 +95,7 @@ namespace CAP_Backend_Source.Modules.Learners.Services
                 AccountIdApprover = request.AccountIdApprover,
                 Status = "Đang tham gia",
                 IsRegister = false,
+                RegisterStatus = "Được Duyệt"
             };
 
             await _myDbContext.Learners.AddAsync(_learner);

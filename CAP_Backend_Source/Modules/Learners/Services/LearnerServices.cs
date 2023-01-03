@@ -11,6 +11,7 @@ namespace CAP_Backend_Source.Modules.Learners.Services
     {
         Task RegisterOrUnRegisterAsync(int userId, RegisterOrUnRegisterRequest request);
         Task ImportAsync(ImportLearnerRequest request);
+        Task<List<Learner>> GetListLearners(int idProgram);
     }
 
     public class LearnerServices : ILearnerServices
@@ -66,6 +67,16 @@ namespace CAP_Backend_Source.Modules.Learners.Services
             }));
             _myDbContext.SaveChanges();
 
+        }
+
+        public async Task<List<Learner>> GetListLearners(int idProgram)
+        {
+            List<Learner> _listLearner = await _myDbContext.Learners.Where(l => l.IsRegister == false && l.ProgramId == idProgram).ToListAsync();
+            if(_listLearner == null)
+            {
+                throw new BadRequestException("Couldn't find a list of learner");
+            }
+            return _listLearner;
         }
     }
 }

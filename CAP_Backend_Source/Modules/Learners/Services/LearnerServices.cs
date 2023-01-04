@@ -11,6 +11,8 @@ namespace CAP_Backend_Source.Modules.Learners.Services
     {
         Task RegisterOrUnRegisterAsync(int userId, RegisterOrUnRegisterRequest request);
         Task ImportAsync(ImportLearnerRequest request);
+        Task<List<Learner>> GetListLearners(int idProgram);
+        Task<Learner> AddLearner(AddLearnerRequest request);
     }
 
     public class LearnerServices : ILearnerServices
@@ -66,6 +68,38 @@ namespace CAP_Backend_Source.Modules.Learners.Services
             }));
             _myDbContext.SaveChanges();
 
+        }
+
+        public async Task<List<Learner>> GetListLearners(int idProgram)
+        {
+            List<Learner> _listLearner = await _myDbContext.Learners.Where(l => l.IsRegister == false && l.ProgramId == idProgram).ToListAsync();
+            if(_listLearner == null)
+            {
+                throw new BadRequestException("Couldn't find a list of learner");
+            }
+            return _listLearner;
+        }
+
+        public async Task<Learner> AddLearner(AddLearnerRequest request)
+        {
+            var checkLearner = await _myDbContext.Learners.FirstOrDefaultAsync(l => l.AccountIdLearner == request.AccountIdLearner && l.ProgramId == request.ProgramId);
+            if (checkLearner != null) 
+            {
+                throw new BadRequestException("Learners already exist in this program.");
+            }
+
+            var _learner = new Learner
+            {
+                AccountIdLearner = request.AccountIdLearner,
+                ProgramId = request.ProgramId,
+                AccountIdApprover = request.AccountIdApprover,
+                Status = "Đang tham gia",
+                IsRegister = false,
+            };
+
+            await _myDbContext.Learners.AddAsync(_learner);
+            await _myDbContext.SaveChangesAsync();
+            return _learner;
         }
     }
 }

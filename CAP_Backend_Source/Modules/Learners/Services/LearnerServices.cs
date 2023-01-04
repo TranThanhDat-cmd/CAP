@@ -12,6 +12,8 @@ namespace CAP_Backend_Source.Modules.Learners.Services
         Task RegisterOrUnRegisterAsync(int userId, RegisterOrUnRegisterRequest request);
         Task ImportAsync(ImportLearnerRequest request);
         Task<List<Learner>> GetListLearners(int idProgram);
+        Task<List<Learner>> GetApplications();
+        Task<Learner?> GetApplication(int id);
         Task<Learner> AddLearner(AddLearnerRequest request);
     }
 
@@ -73,7 +75,7 @@ namespace CAP_Backend_Source.Modules.Learners.Services
         public async Task<List<Learner>> GetListLearners(int idProgram)
         {
             List<Learner> _listLearner = await _myDbContext.Learners.Where(l => l.IsRegister == false && l.ProgramId == idProgram).ToListAsync();
-            if(_listLearner == null)
+            if (_listLearner == null)
             {
                 throw new BadRequestException("Couldn't find a list of learner");
             }
@@ -83,7 +85,7 @@ namespace CAP_Backend_Source.Modules.Learners.Services
         public async Task<Learner> AddLearner(AddLearnerRequest request)
         {
             var checkLearner = await _myDbContext.Learners.FirstOrDefaultAsync(l => l.AccountIdLearner == request.AccountIdLearner && l.ProgramId == request.ProgramId);
-            if (checkLearner != null) 
+            if (checkLearner != null)
             {
                 throw new BadRequestException("Learners already exist in this program.");
             }
@@ -100,6 +102,21 @@ namespace CAP_Backend_Source.Modules.Learners.Services
             await _myDbContext.Learners.AddAsync(_learner);
             await _myDbContext.SaveChangesAsync();
             return _learner;
+        }
+
+        public async Task<List<Learner>> GetApplications()
+        {
+            return await _myDbContext.Learners.Where(x => x.IsRegister).ToListAsync();
+        }
+
+        public async Task<Learner?> GetApplication(int id)
+        {
+            return await _myDbContext.Learners
+                .Where(x => x.LearnerId == id)
+                .Include(x => x.AccountIdLearnerNavigation)
+                .Include(x => x.Program)
+                .FirstOrDefaultAsync();
+
         }
     }
 }

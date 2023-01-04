@@ -15,6 +15,7 @@ namespace CAP_Backend_Source.Modules.Learners.Services
         Task<List<Learner>> GetApplications();
         Task<Learner?> GetApplication(int id);
         Task<Learner> AddLearner(AddLearnerRequest request);
+        Task<string> UpdateLearner(int idLearner, UpdateLearnerRequest request);
     }
 
     public class LearnerServices : ILearnerServices
@@ -97,6 +98,7 @@ namespace CAP_Backend_Source.Modules.Learners.Services
                 AccountIdApprover = request.AccountIdApprover,
                 Status = "Đang tham gia",
                 IsRegister = false,
+                RegisterStatus = "Được Duyệt"
             };
 
             await _myDbContext.Learners.AddAsync(_learner);

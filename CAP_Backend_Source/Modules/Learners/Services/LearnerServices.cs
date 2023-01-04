@@ -13,6 +13,7 @@ namespace CAP_Backend_Source.Modules.Learners.Services
         Task ImportAsync(ImportLearnerRequest request);
         Task<List<Learner>> GetListLearners(int idProgram);
         Task<Learner> AddLearner(AddLearnerRequest request);
+        Task<string> UpdateLearner(int idLearner, UpdateLearnerRequest request);
     }
 
     public class LearnerServices : ILearnerServices
@@ -101,6 +102,21 @@ namespace CAP_Backend_Source.Modules.Learners.Services
             await _myDbContext.Learners.AddAsync(_learner);
             await _myDbContext.SaveChangesAsync();
             return _learner;
+        }
+
+        public async Task<string> UpdateLearner(int idLearner, UpdateLearnerRequest request)
+        {
+            var _learner = await _myDbContext.Learners.FirstOrDefaultAsync(l => l.LearnerId == idLearner);
+            if (_learner != null)
+            {
+                throw new BadRequestException("Learner is not found");
+            }
+
+            _learner.Status = request.Status;
+            _learner.Comment = request.Comment;
+            await _myDbContext.SaveChangesAsync();
+            return "Update Success";
+            throw new NotImplementedException();
         }
     }
 }

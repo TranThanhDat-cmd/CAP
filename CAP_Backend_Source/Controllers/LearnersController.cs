@@ -31,11 +31,11 @@ namespace CAP_Backend_Source.Controllers
             return Ok(await _learnerServices.AddLearner(request));
         }
 
-        //[HttpPut("UpdateLearner/{idLearner}")]
-        //public async Task<IActionResult> UpdateLearner(int idLearner, UpdateLearnerRequest request)
-        //{
-        //    return Ok(await _learnerServices.UpdateLearner(idLearner, request));
-        //}
+        [HttpPut("UpdateLearner/{idLearner}")]
+        public async Task<IActionResult> UpdateLearner(int idLearner, UpdateLearnerRequest request)
+        {
+            return Ok(await _learnerServices.UpdateLearner(idLearner, request));
+        }
 
         [Authorize]
         [HttpPost("RegisterOrUnRegister")]

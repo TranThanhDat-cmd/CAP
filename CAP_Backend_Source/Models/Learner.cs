@@ -10,6 +10,7 @@ public partial class Learner
     public int AccountIdLearner { get; set; }
 
     public int ProgramId { get; set; }
+    public Program? Program { get; set; }
 
     public bool IsRegister { get; set; }
 

@@ -19,6 +19,24 @@ namespace CAP_Backend_Source.Controllers
             _learnerServices = learnerServices;
         }
 
+        [HttpGet("GetListLearner/{idProgram}")]
+        public async Task<IActionResult> GetListLearners(int idProgram)
+        {
+            return Ok(await _learnerServices.GetListLearners(idProgram));
+        }
+
+        [HttpPost("AddLearner")]
+        public async Task<IActionResult> AddLearner(AddLearnerRequest request)
+        {
+            return Ok(await _learnerServices.AddLearner(request));
+        }
+
+        [HttpPut("UpdateLearner/{idLearner}")]
+        public async Task<IActionResult> UpdateLearner(int idLearner, UpdateLearnerRequest request)
+        {
+            return Ok(await _learnerServices.UpdateLearner(idLearner, request));
+        }
+
         [Authorize]
         [HttpPost("RegisterOrUnRegister")]
         public async Task<IActionResult> RegisterOrUnRegister(RegisterOrUnRegisterRequest request)

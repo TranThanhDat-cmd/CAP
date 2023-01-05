@@ -19,9 +19,9 @@ namespace CAP_Backend_UnitTest.Services
         [Fact]
         public async Task RegisterOrUnRegisterAsyncSuccess()
         {
-            await learnerServices.RegisterOrUnRegisterAsync(1,new CAP_Backend_Source.Modules.Learners.Requests.RegisterOrUnRegisterRequest
+            await learnerServices.RegisterOrUnRegisterAsync(1, new CAP_Backend_Source.Modules.Learners.Requests.RegisterOrUnRegisterRequest
             {
-                IsRegister= true,
+                IsRegister = true,
                 ProgramId = 17,
             });
 
@@ -36,6 +36,26 @@ namespace CAP_Backend_UnitTest.Services
                 IsRegister = true,
                 ProgramId = 17,
             });
+        }
+
+        [Fact]
+        public async Task GetApplicationsSuccess()
+        {
+            await learnerServices.GetApplications();
+        }
+
+        [Fact]
+        public async Task GetApplicationSuccess()
+        {
+            await learnerServices.GetApplication(1);
+        }
+
+        [Fact]
+        [ExpectedException(typeof(System.Exception))]
+
+        public async Task GetApplicationFail()
+        {
+            await learnerServices.GetApplication(-1000);
         }
     }
 }

@@ -124,7 +124,7 @@ namespace CAP_Backend_Source.Modules.Learners.Services
         public async Task<string> UpdateLearner(int idLearner, UpdateLearnerRequest request)
         {
             var _learner = await _myDbContext.Learners.FirstOrDefaultAsync(l => l.LearnerId == idLearner);
-            if (_learner != null)
+            if (_learner == null)
             {
                 throw new BadRequestException("Learner is not found");
             }
@@ -133,7 +133,6 @@ namespace CAP_Backend_Source.Modules.Learners.Services
             _learner.Comment = request.Comment;
             await _myDbContext.SaveChangesAsync();
             return "Update Success";
-            throw new NotImplementedException();
         }
     }
 }

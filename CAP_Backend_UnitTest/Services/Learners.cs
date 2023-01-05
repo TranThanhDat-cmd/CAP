@@ -1,17 +1,9 @@
 ﻿using CAP_Backend_Source.Models;
 using CAP_Backend_Source.Modules.FileStorage.Service;
 using CAP_Backend_Source.Modules.Learners.Services;
-using CAP_Backend_Source.Modules.Programs.Service;
 using Infrastructure.Exceptions.HttpExceptions;
 using Microsoft.EntityFrameworkCore;
-using Infrastructure.Exceptions.HttpExceptions;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CAP_Backend_Source.Modules.Learners.Requests;
 
 namespace CAP_Backend_UnitTest.Services
@@ -30,6 +22,20 @@ namespace CAP_Backend_UnitTest.Services
                 ProgramId = 17,
             });
 
+        }
+
+        [Fact]
+        public async Task ApproveApplicationSuccess()
+        {
+            var learner = await learnerServices.ApproveApplication(1);
+            Xunit.Assert.NotNull(learner);
+        }
+
+        [ExpectedException(typeof(System.Exception))]
+        [Fact]
+        public async Task ApproveApplicationFail()
+        {
+            var learner = await learnerServices.ApproveApplication(-1);
         }
 
         [ExpectedException(typeof(System.Exception))]
@@ -117,7 +123,7 @@ namespace CAP_Backend_UnitTest.Services
                 Comment = "Unit Test of Update Learner"
             };
 
-            var respone = await learnerServices.UpdateLearner(1,input);
+            var respone = await learnerServices.UpdateLearner(1, input);
 
             Xunit.Assert.Equal("Update Success", respone);
         }

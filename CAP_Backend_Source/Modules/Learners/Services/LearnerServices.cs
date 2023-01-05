@@ -13,7 +13,9 @@ namespace CAP_Backend_Source.Modules.Learners.Services
         Task ImportAsync(ImportLearnerRequest request);
         Task<List<Learner>> GetListLearners(int idProgram);
         Task<List<Learner>> GetApplications();
+        Task<List<Learner>> GetMyApplications(int userId);
         Task<Learner?> GetApplication(int id);
+        Task<Learner?> ApproveApplication(int id);
         Task<Learner> AddLearner(AddLearnerRequest request);
         Task<string> UpdateLearner(int idLearner, UpdateLearnerRequest request);
     }
@@ -133,6 +135,19 @@ namespace CAP_Backend_Source.Modules.Learners.Services
             _learner.Comment = request.Comment;
             await _myDbContext.SaveChangesAsync();
             return "Update Success";
+        }
+
+        public async Task<Learner?> ApproveApplication(int id)
+        {
+            var application = await GetApplication(id) ?? throw new BadRequestException("Id is not found");
+            application!.RegisterStatus = "Approve";
+            _myDbContext.SaveChanges();
+            return application;
+        }
+
+        public async Task<List<Learner>> GetMyApplications(int userId)
+        {
+            return await _myDbContext.Learners.Where(x => x.IsRegister && x.AccountIdLearner == userId).ToListAsync();
         }
     }
 }

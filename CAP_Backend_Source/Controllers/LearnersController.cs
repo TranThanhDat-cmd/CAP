@@ -55,5 +55,34 @@ namespace CAP_Backend_Source.Controllers
             await _learnerServices.ImportAsync(request);
             return Ok();
         }
+
+        [Authorize]
+        [HttpGet("Applications/{id}")]
+        public async Task<IActionResult> GetApplication(int id)
+        {
+            return Ok(await _learnerServices.GetApplication(id));
+        }
+
+        [Authorize]
+        [HttpGet("Applications")]
+        public async Task<IActionResult> GetApplications()
+        {
+            return Ok(await _learnerServices.GetApplications());
+        }
+
+        [Authorize]
+        [HttpGet("MyApplications")]
+        public async Task<IActionResult> GetMyApplications()
+        {
+            int userId = int.Parse(User.FindFirstValue("id").ToString());
+            return Ok(await _learnerServices.GetMyApplications(userId));
+        }
+
+        [Authorize]
+        [HttpPut("Applications/{id}/Approve")]
+        public async Task<IActionResult> ApproveApplication(int id)
+        {
+            return Ok(await _learnerServices.ApproveApplication(id));
+        }
     }
 }

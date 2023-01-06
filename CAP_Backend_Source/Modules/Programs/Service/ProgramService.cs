@@ -54,7 +54,7 @@ namespace CAP_Backend_Source.Modules.Programs.Service
             Models.Program program = new()
             {
                 Lecturers = request.Lecturers,
-                TrainingHours = request.Time,
+                TrainingHours = request.TrainingHours,
                 AccountIdCreator = userId,
                 FacultyId = request.FacultyId,
                 CategoryId = request.CategoryId,
@@ -115,7 +115,7 @@ namespace CAP_Backend_Source.Modules.Programs.Service
 
             program.FacultyId = request.FacultyId;
             program.Lecturers = request.Lecturers;
-            program.TrainingHours = request.Time;
+            program.TrainingHours = request.TrainingHours;
             program.CategoryId = request.CategoryId;
             program.ProgramName = request.ProgramName;
 

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace CAP_Backend_UnitTest.Services
 {
-    public class Positions
+    public class ManagePositions
     {
         private PositionService PositionService = new PositionService(new MyDbContext(), new FileStorageService());
 

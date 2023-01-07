@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace CAP_Backend_UnitTest.Services;
 
-public class Programs
+public class ManagePrograms
 {
     private ProgramService programService = new ProgramService(new MyDbContext(), new FileStorageService());
 

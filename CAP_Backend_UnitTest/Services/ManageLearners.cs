@@ -8,7 +8,7 @@ using CAP_Backend_Source.Modules.Learners.Requests;
 
 namespace CAP_Backend_UnitTest.Services
 {
-    public class Learners
+    public class ManageLearners
     {
         private MyDbContext _myDbContext = new MyDbContext();
         private LearnerServices learnerServices = new LearnerServices(new MyDbContext(), new FileStorageService());

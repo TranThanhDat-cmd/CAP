@@ -6,7 +6,7 @@ using Infrastructure.Exceptions.HttpExceptions;
 
 namespace CAP_Backend_UnitTest.Services
 {
-    public class Accounts
+    public class ManageAccounts
     {
         private AccountService accountService = new AccountService(new MyDbContext());
 

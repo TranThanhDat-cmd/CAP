@@ -16,6 +16,7 @@ namespace CAP_Backend_Source.Modules.Learners.Services
         Task<List<Learner>> GetMyApplications(int userId);
         Task<Learner?> GetApplication(int id);
         Task<Learner?> ApproveApplication(int id);
+        Task<Learner?> RefuseApplication(int id, RefuseApplicationRequest request);
         Task<Learner> AddLearner(AddLearnerRequest request);
         Task<string> UpdateLearner(int idLearner, UpdateLearnerRequest request);
     }
@@ -148,6 +149,15 @@ namespace CAP_Backend_Source.Modules.Learners.Services
         public async Task<List<Learner>> GetMyApplications(int userId)
         {
             return await _myDbContext.Learners.Where(x => x.IsRegister && x.AccountIdLearner == userId).ToListAsync();
+        }
+
+        public async Task<Learner?> RefuseApplication(int id, RefuseApplicationRequest request)
+        {
+            var application = await GetApplication(id) ?? throw new BadRequestException("Id is not found");
+            application!.RegisterStatus = "Refuse";
+            application.ReasonRefusal = request.ReasonRefusal;
+            _myDbContext.SaveChanges();
+            return application;
         }
     }
 }

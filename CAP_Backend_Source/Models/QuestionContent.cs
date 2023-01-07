@@ -14,4 +14,5 @@ public partial class QuestionContent
     public bool? IsAnswer { get; set; }
 
     public virtual Question? Question { get; set; }
+    public virtual ICollection<Answer> Answer { get; } = new List<Answer>();
 }

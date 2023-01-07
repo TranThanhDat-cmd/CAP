@@ -51,6 +51,8 @@ public partial class MyDbContext : DbContext
 
     public virtual DbSet<ReviewerProgram> ReviewsProgram { get; set; }
 
+    public virtual DbSet<ResultTest> ResultTests { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Data Source=tuleap.vanlanguni.edu.vn,18082;Initial Catalog=CP25Team02;User ID=CP25Team02;Password=CP25Team02;TrustServerCertificate=True");
@@ -118,13 +120,21 @@ public partial class MyDbContext : DbContext
 
         modelBuilder.Entity<Answer>(entity =>
         {
-            entity.HasKey(e => e.AnswerId).HasName("PK__Answer__D482500413F7783E");
+            entity.HasKey(e => e.AnswerId).HasName("PK__Answer__D482500441027AB4");
 
             entity.ToTable("Answer");
 
             entity.HasOne(d => d.Question).WithMany(p => p.Answers)
                 .HasForeignKey(d => d.QuestionId)
                 .HasConstraintName("FK_Answer_Question");
+
+            entity.HasOne(d => d.Account).WithMany(p => p.Answer)
+                .HasForeignKey(d => d.AccountIdRespondent)
+                .HasConstraintName("FK_Answer_Account");
+
+            entity.HasOne(d => d.QuestionContent).WithMany(p => p.Answer)
+                .HasForeignKey(d => d.QuestionContentId)
+                .HasConstraintName("FK_Answer_QuestionContent");
         });
 
         modelBuilder.Entity<Category>(entity =>
@@ -311,6 +321,20 @@ public partial class MyDbContext : DbContext
                 .HasConstraintName("FK_ReviewerProgram_Program");
         });
 
+        modelBuilder.Entity<ResultTest>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__ResultTe__3214EC0730107C16");
+
+            entity.ToTable("ResultTest");
+
+            entity.HasOne(d => d.Account).WithMany(p => p.ResultTest)
+                .HasForeignKey(d => d.AccountId)
+                .HasConstraintName("FK_ResultTest_Account");
+
+            entity.HasOne(d => d.Test).WithMany(p => p.ResultTest)
+                .HasForeignKey(d => d.TestId)
+                .HasConstraintName("[FK_ResultTest_Test]");
+        });
         OnModelCreatingPartial(modelBuilder);
     }
 

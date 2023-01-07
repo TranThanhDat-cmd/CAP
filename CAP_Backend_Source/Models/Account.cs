@@ -40,4 +40,6 @@ public partial class Account
     public virtual ICollection<Reviewer> Reviewers { get; } = new List<Reviewer>();
 
     public virtual ICollection<ReviewerProgram> ReviewsProgram { get; } = new List<ReviewerProgram>();
+    public virtual ICollection<Answer> Answer { get; } = new List<Answer>();
+    public virtual ICollection<ResultTest> ResultTest { get; } = new List<ResultTest>();
 }

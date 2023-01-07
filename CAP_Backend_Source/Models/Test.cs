@@ -20,4 +20,5 @@ public partial class Test
     public virtual ContentProgram Content { get; set; } = null!;
 
     public virtual ICollection<Question> Questions { get; } = new List<Question>();
+    public virtual ICollection<ResultTest> ResultTest { get; } = new List<ResultTest>();
 }

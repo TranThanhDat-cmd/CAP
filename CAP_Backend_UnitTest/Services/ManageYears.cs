@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CAP_Backend_UnitTest.Services
 {
-    public class AcademicYears
+    public class ManageYears
     {
         private AcademicYearService AcademicYearService = new AcademicYearService(new MyDbContext(), new FileStorageService());
 

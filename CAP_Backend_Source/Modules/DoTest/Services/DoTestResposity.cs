@@ -1,5 +1,6 @@
 ﻿using CAP_Backend_Source.Models;
 using CAP_Backend_Source.Modules.DoTest.Request;
+using Infrastructure.Exceptions.HttpExceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace CAP_Backend_Source.Modules.DoTest.Services
@@ -15,7 +16,15 @@ namespace CAP_Backend_Source.Modules.DoTest.Services
         {
             double? score = 0;
             var question = await _myDbContext.Questions.FirstOrDefaultAsync(q => q.QuestionId == requests[0].QuestionId);
+            if(question == null)
+            {
+                throw new BadRequestException("Question is not found");
+            }
             var _test = await _myDbContext.Tests.SingleOrDefaultAsync(t => t.TestId == question.TestsId);
+            if(_test == null)
+            {
+                throw new BadRequestException("Test is not found");
+            }
             foreach(DoTestRequest answer in requests)
             {
                 var _answer = new Answer()
@@ -29,12 +38,13 @@ namespace CAP_Backend_Source.Modules.DoTest.Services
                 await _myDbContext.SaveChangesAsync();
                 var _questionContent = await _myDbContext.QuestionContents.FirstOrDefaultAsync(qc => qc.QuestionContentId == answer.QuestionContentId);
                 var _question = await _myDbContext.Questions.FirstOrDefaultAsync(q => q.QuestionId == answer.QuestionId);
-                if (_questionContent.IsAnswer == true) 
+                
+                if (_questionContent != null && _questionContent.IsAnswer == true && _question != null) 
                 {
                     score = score + _question.Score;
                 }
             }
-            SaveResultTest(_test.TestId, idAccount, score);
+            await SaveResultTest(_test.TestId, idAccount, score);
             return "Save Answer Success";
         }
 

@@ -9,6 +9,9 @@ public partial class Program
     [NotMapped]
     public bool IsLike { get; set; }
 
+    [NotMapped]
+    public bool IsRegister { get; set; }
+
     public int ProgramId { get; set; }
 
     public int? AccountIdCreator { get; set; }

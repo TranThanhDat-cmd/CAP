@@ -111,7 +111,9 @@ namespace CAP_Backend_Source.Modules.Learners.Services
 
         public async Task<List<Learner>> GetApplications()
         {
-            return await _myDbContext.Learners.Where(x => x.IsRegister).ToListAsync();
+            return await _myDbContext.Learners.Where(x => x.IsRegister)
+                .Include(x => x.Program)
+                .ToListAsync();
         }
 
         public async Task<Learner?> GetApplication(int id)

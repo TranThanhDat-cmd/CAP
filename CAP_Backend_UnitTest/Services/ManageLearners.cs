@@ -52,7 +52,7 @@ namespace CAP_Backend_UnitTest.Services
         [Fact]
         public async Task GetApplicationsSuccess()
         {
-            await learnerServices.GetApplications();
+            await learnerServices.GetApplications(new GetApplicationsRequest());
         }
 
         [Fact]

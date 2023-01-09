@@ -12,7 +12,7 @@ namespace CAP_Backend_Source.Modules.Learners.Services
         Task RegisterOrUnRegisterAsync(int userId, RegisterOrUnRegisterRequest request);
         Task ImportAsync(ImportLearnerRequest request);
         Task<List<Learner>> GetListLearners(int idProgram);
-        Task<List<Learner>> GetApplications();
+        Task<List<Learner>> GetApplications(GetApplicationsRequest request);
         Task<List<Learner>> GetMyApplications(int userId);
         Task<Learner?> GetApplication(int id);
         Task<Learner?> ApproveApplication(int id);
@@ -109,9 +109,9 @@ namespace CAP_Backend_Source.Modules.Learners.Services
             return _learner;
         }
 
-        public async Task<List<Learner>> GetApplications()
+        public async Task<List<Learner>> GetApplications(GetApplicationsRequest request)
         {
-            return await _myDbContext.Learners.Where(x => x.IsRegister)
+            return await _myDbContext.Learners.Where(x => x.IsRegister && request.ProgramId == null || x.ProgramId == request.ProgramId)
                 .Include(x => x.Program)
                 .ToListAsync();
         }

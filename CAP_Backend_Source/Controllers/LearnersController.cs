@@ -65,9 +65,9 @@ namespace CAP_Backend_Source.Controllers
 
         [Authorize]
         [HttpGet("Applications")]
-        public async Task<IActionResult> GetApplications()
+        public async Task<IActionResult> GetApplications([FromQuery] GetApplicationsRequest request)
         {
-            return Ok(await _learnerServices.GetApplications());
+            return Ok(await _learnerServices.GetApplications(request));
         }
 
         [Authorize]

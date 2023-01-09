@@ -48,9 +48,11 @@ public class ProgramsController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        var success =  int.TryParse(User.FindFirstValue("id"),out int id);
-        return Ok(await _programService.GetAsync(success ? id: default(int?)));
+        var success = int.TryParse(User.FindFirstValue("id"), out int id);
+        return Ok(await _programService.GetAsync(success ? id : default(int?)));
     }
+
+
     [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<IActionResult> Get([FromRoute] int id)
@@ -74,6 +76,14 @@ public class ProgramsController : ControllerBase
     public async Task<IActionResult> GetContents([FromRoute] int id)
     {
         return Ok(await _programService.GetContentsAsync(id));
+    }
+
+
+    [AllowAnonymous]
+    [HttpGet("Contents")]
+    public async Task<IActionResult> GetContentsAsync(GetContentRequest request)
+    {
+        return Ok(await _programService.GetContentsAsync(request));
     }
 
     [AllowAnonymous]

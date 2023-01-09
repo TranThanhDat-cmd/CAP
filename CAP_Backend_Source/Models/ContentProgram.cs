@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CAP_Backend_Source.Models;
 
 public partial class ContentProgram
 {
+    [NotMapped]
+    public bool IsDone { get; set; } = false;
     public int ContentId { get; set; }
 
     public int ProgramId { get; set; }

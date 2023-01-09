@@ -18,6 +18,7 @@ namespace CAP_Backend_Source.Modules.Programs.Service
         Task DeleteAsync(int id);
         Task<Models.Program?> GetDetailAsync(int id, int? userId = default);
         Task<List<ContentProgram>> GetContentsAsync(int id);
+        Task<List<ContentProgram>> GetContentsAsync(GetContentRequest request);
         Task<ContentProgram?> GetContentAsync(int id);
         Task<ContentProgram> CreateContentAsync(CreateContentRequest request);
         Task<ContentProgram> UpdateContentAsync(int id, CreateContentRequest request);
@@ -330,6 +331,25 @@ namespace CAP_Backend_Source.Modules.Programs.Service
                 }
             }
             await _myDbContext.SaveChangesAsync();
+        }
+
+        public async Task<List<ContentProgram>> GetContentsAsync(GetContentRequest request)
+        {
+            var contents = await _myDbContext.ContentPrograms
+                .Where(x => x.ProgramId == request.ProgramId)
+                .Include(x => x.Tests).ThenInclude(x => x.Questions)
+                .ToListAsync();
+            contents.ForEach(x =>
+            {
+                var questionIds = x.Tests.SelectMany(x => x.Questions.Select(x => x.QuestionId));
+                x.IsDone = _myDbContext.Answers
+                .Where(
+                    x => x.AccountIdRespondent == request.AccountId && questionIds.Contains(x.QuestionId))
+                .Count() == questionIds.Count();
+            });
+
+            return contents;
+
         }
     }
 

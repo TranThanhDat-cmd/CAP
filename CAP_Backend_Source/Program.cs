@@ -22,6 +22,7 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using CAP_Backend_Source.Modules.ReviewProgram.Service;
 using CAP_Backend_Source.Modules.Learners.Services;
+using CAP_Backend_Source.Modules.DoTest.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -109,6 +110,7 @@ builder.Services.AddScoped<IPositionService, PositionService>();
 builder.Services.AddScoped<IAcademicYearService, AcademicYearService>();
 builder.Services.AddScoped<IReviewProgramService, ReviewProgramResposity>();
 builder.Services.AddScoped<ILearnerServices, LearnerServices>();
+builder.Services.AddScoped<IDoTestService, DoTestResposity>();
 var app = builder.Build();
 
 app.UseStaticFiles();

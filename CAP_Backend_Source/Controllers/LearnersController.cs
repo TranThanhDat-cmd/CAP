@@ -84,5 +84,12 @@ namespace CAP_Backend_Source.Controllers
         {
             return Ok(await _learnerServices.ApproveApplication(id));
         }
+
+        [Authorize]
+        [HttpPut("Applications/{id}/Refuse")]
+        public async Task<IActionResult> RefuseApplication(int id, [FromBody] RefuseApplicationRequest request)
+        {
+            return Ok(await _learnerServices.RefuseApplication(id, request));
+        }
     }
 }

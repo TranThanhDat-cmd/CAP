@@ -29,7 +29,7 @@ namespace CAP_Backend_Source.Modules.Programs.Request
 
 
         public int? AcademicYearId { get; set; }
-        public int? Time { get; set; }
+        public int? TrainingHours { get; set; }
 
         public int? Semester { get; set; }
 

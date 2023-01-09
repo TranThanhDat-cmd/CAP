@@ -53,8 +53,9 @@ namespace CAP_Backend_Source.Modules.Programs.Service
 
             Models.Program program = new()
             {
+                MaxLearner = request.MaxLearner,
                 Lecturers = request.Lecturers,
-                TrainingHours = request.Time,
+                TrainingHours = request.TrainingHours,
                 AccountIdCreator = userId,
                 FacultyId = request.FacultyId,
                 CategoryId = request.CategoryId,
@@ -115,10 +116,10 @@ namespace CAP_Backend_Source.Modules.Programs.Service
 
             program.FacultyId = request.FacultyId;
             program.Lecturers = request.Lecturers;
-            program.TrainingHours = request.Time;
+            program.TrainingHours = request.TrainingHours;
             program.CategoryId = request.CategoryId;
             program.ProgramName = request.ProgramName;
-
+            program.MaxLearner = request.MaxLearner;
             program.StartDate = request.StartDate;
             program.EndDate = request.EndDate;
             program.IsPublish = false;
@@ -177,6 +178,8 @@ namespace CAP_Backend_Source.Modules.Programs.Service
             program.Category.Programs = null;
             program.Faculty.Programs = null;
             program.IsLike = userId != default && _myDbContext.AccountPrograms.Any(x => x.AccountId == userId && x.ProgramId == program.ProgramId);
+            program.IsRegister = userId != default && _myDbContext.Learners.Any(y => y.AccountIdLearner == userId && y.ProgramId == program.ProgramId);
+
             program.ProgramPositions = program.ProgramPositions.Select(x =>
             {
                 x.Position.ProgramPositions = null;
@@ -208,6 +211,7 @@ namespace CAP_Backend_Source.Modules.Programs.Service
                 .ToListAsync()).ConvertAll(x =>
                 {
                     x.IsLike = userId != default && _myDbContext.AccountPrograms.Any(y => y.AccountId == userId && y.ProgramId == x.ProgramId);
+                    x.IsRegister = userId != default && _myDbContext.Learners.Any(y => y.AccountIdLearner == userId && y.ProgramId == x.ProgramId);
                     x.TotalLike = x.AccountPrograms?.Count;
                     x.AccountPrograms = null;
                     x.AcademicYear.Programs = null;

@@ -54,6 +54,7 @@ namespace CAP_Backend_Source.Modules.Programs.Service
 
             Models.Program program = new()
             {
+                MaxLearner = request.MaxLearner,
                 Lecturers = request.Lecturers,
                 TrainingHours = request.TrainingHours,
                 AccountIdCreator = userId,
@@ -119,7 +120,7 @@ namespace CAP_Backend_Source.Modules.Programs.Service
             program.TrainingHours = request.TrainingHours;
             program.CategoryId = request.CategoryId;
             program.ProgramName = request.ProgramName;
-
+            program.MaxLearner = request.MaxLearner;
             program.StartDate = request.StartDate;
             program.EndDate = request.EndDate;
             program.IsPublish = false;

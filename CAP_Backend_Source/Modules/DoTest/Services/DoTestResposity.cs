@@ -27,22 +27,61 @@ namespace CAP_Backend_Source.Modules.DoTest.Services
             }
             foreach(DoTestRequest answer in requests)
             {
-                var _answer = new Answer()
-                {
-                    QuestionId = answer.QuestionId,
-                    AccountIdRespondent = idAccount,
-                    QuestionContentId = answer.QuestionContentId,
-                };
-
-                await _myDbContext.Answers.AddAsync(_answer);
-                await _myDbContext.SaveChangesAsync();
-                var _questionContent = await _myDbContext.QuestionContents.FirstOrDefaultAsync(qc => qc.QuestionContentId == answer.QuestionContentId);
                 var _question = await _myDbContext.Questions.FirstOrDefaultAsync(q => q.QuestionId == answer.QuestionId);
-                
-                if (_questionContent != null && _questionContent.IsAnswer == true && _question != null) 
+                var _questionContent = await _myDbContext.QuestionContents.FirstOrDefaultAsync(qc => qc.QuestionContentId == answer.QuestionContentId);
+                var _checkAnswer = await _myDbContext.Answers.FirstOrDefaultAsync(a => a.QuestionContentId == answer.QuestionContentId && a.AccountIdRespondent == idAccount);
+                if(_checkAnswer != null) 
                 {
-                    score = score + _question.Score;
+                    continue;
                 }
+                
+                if(_question.TypeId == 1)
+                {
+                    var _answer = new Answer()
+                    {
+                        QuestionId = answer.QuestionId,
+                        AccountIdRespondent = idAccount,
+                        QuestionContentId = answer.QuestionContentId,
+                    };
+
+                    await _myDbContext.Answers.AddAsync(_answer);
+                    await _myDbContext.SaveChangesAsync();
+
+                    if (_questionContent != null && _questionContent.IsAnswer == true && _question != null)
+                    {
+                        score = score + _question.Score;
+                    }
+                }
+                else
+                {
+                    int count = 0;
+                    List<DoTestRequest> listAnswer = requests.Where(r => r.QuestionId == _question.QuestionId).ToList();
+                    List<QuestionContent> _check = await _myDbContext.QuestionContents.Where(qc => qc.QuestionId == _question.QuestionId && qc.IsAnswer == true).ToListAsync();
+                    foreach(var item in listAnswer)
+                    {
+                        var _answer = new Answer()
+                        {
+                            QuestionId = item.QuestionId,
+                            AccountIdRespondent = idAccount,
+                            QuestionContentId = item.QuestionContentId,
+                        };
+
+                        await _myDbContext.Answers.AddAsync(_answer);
+                        await _myDbContext.SaveChangesAsync();
+
+                        foreach (var check in _check)
+                        {
+                            if(item.QuestionContentId == check.QuestionContentId)
+                            {
+                                count ++;
+                                break;
+                            }
+                        }
+                    }
+
+                    score = score + (_question.Score*(count/_check.Count));
+                }
+                
             }
             await SaveResultTest(_test.TestId, idAccount, score);
             return "Save Answer Success";

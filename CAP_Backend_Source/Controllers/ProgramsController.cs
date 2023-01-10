@@ -81,7 +81,7 @@ public class ProgramsController : ControllerBase
 
     [AllowAnonymous]
     [HttpGet("Contents")]
-    public async Task<IActionResult> GetContentsAsync(GetContentRequest request)
+    public async Task<IActionResult> GetContentsAsync([FromQuery]GetContentRequest request)
     {
         return Ok(await _programService.GetContentsAsync(request));
     }
